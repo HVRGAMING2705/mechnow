@@ -276,6 +276,35 @@ footer.site a:hover{color:var(--signal)}
 /* reveal */
 html.fx .rv{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .9s var(--ease)}
 html.fx .rv.visible{opacity:1;transform:none}
+/* ============ v2: booking wizard / auth / partner / admin ============ */
+.role-switch{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:3px;gap:3px;margin-left:auto}
+.role-switch button{border:0;background:transparent;color:var(--muted);border-radius:999px;padding:8px 13px;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.role-switch button.on{background:var(--signal);color:var(--on-signal)}
+#authUser{font-size:11px;color:var(--muted);letter-spacing:.04em}
+#authBtn{padding:9px 15px;font-size:13px;border-radius:999px}
+.wiz-steps{display:flex;gap:6px;margin:16px 0 20px}
+.wiz-steps span{flex:1;text-align:center;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 2px;border-bottom:2px solid var(--line)}
+.wiz-steps span.on{color:var(--signal);border-color:var(--signal)}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:8px}
+.slot-btn{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:11px;padding:12px 6px;font-weight:700;font-size:13.5px;transition:all .2s var(--ease)}
+.slot-btn:hover{border-color:var(--signal)}
+.slot-btn.on{background:var(--signal);color:var(--on-signal);border-color:var(--signal)}
+.slot-btn:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.date-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.date-btn{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:11px;padding:10px 12px;font-weight:600;font-size:13px}
+.date-btn.on{background:var(--signal);color:var(--on-signal);border-color:var(--signal)}
+.veh-row{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer;background:var(--soft)}
+.veh-row.on{border-color:var(--signal);box-shadow:0 0 0 2px rgba(245,158,11,.25)}
+.veh-row input{accent-color:var(--signal);width:17px;height:17px}
+.star-btn{background:none;border:0;font-size:24px;color:var(--muted);padding:2px;line-height:1}
+.star-btn.on{color:var(--signal)}
+.dtable{width:100%;border-collapse:collapse;font-size:13.5px;min-width:820px}
+.dtable th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+.dtable td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.dtable select{background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px;font-size:13px;max-width:170px}
+.job-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;background:var(--soft)}
+.ptag{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;background:var(--signal);color:var(--on-signal);border-radius:999px;padding:3px 9px;font-weight:700}
+@media(max-width:900px){.role-switch{order:3}.hd-in{flex-wrap:wrap;height:auto;padding:10px 0;row-gap:8px}}
 /* print */
 @media print{header.site,#progressBar,#backTop,#toast,.grain,.marquee,.find-btn,.cursor-dot,.cursor-ring{display:none!important}body{background:#fff;color:#000}.hero,.metrics,.band,footer.site,.dark-band{background:#fff!important;color:#000!important}.hero h1 .outl{color:#000;-webkit-text-stroke:0}.hero .sub,.band p,.metric span{color:#333!important}section.block{padding:22px 0}.mcard,.bcard,.tile{break-inside:avoid;box-shadow:none}}
 /* responsive */
@@ -305,6 +334,13 @@ html.fx .rv.visible{opacity:1;transform:none}
       <a href="#join">For mechanics</a>
       <a href="#faq">FAQ</a>
     </nav>
+    <div class="role-switch" role="group" aria-label="View as">
+      <button type="button" id="roleCustomer" class="on">Customer</button>
+      <button type="button" id="roleMechanic">Mechanic</button>
+      <button type="button" id="roleAdmin">Admin</button>
+    </div>
+    <span id="authUser" class="mono"></span>
+    <button class="btn" id="authBtn" type="button">Login</button>
     <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
       <svg id="themeIconSun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg>
       <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M20.6 14.2A8.8 8.8 0 1 1 9.8 3.4a7.2 7.2 0 0 0 10.8 10.8Z"/></svg>
@@ -388,6 +424,61 @@ html.fx .rv.visible{opacity:1;transform:none}
     <p class="sec-sub rv">Live status for every booking you've made. <span class="demo-note">DEMO MODE — STATUS ADVANCES ABOUT EVERY 20 SECONDS.</span></p>
     <div id="bookingsList" style="margin-top:30px"></div>
     <div class="empty" id="bookingsEmpty"><b>No bookings yet</b>When you book a mechanic above, live job tracking shows up here.</div>
+    <div id="garageBox" style="margin-top:28px"></div>
+  </div>
+</section>
+
+<!-- ================= PARTNER (MECHANIC) ================= -->
+<section class="block" id="partner" style="display:none">
+  <div class="wrap">
+    <p class="kicker rv">Partner dashboard</p>
+    <h2 class="sec-h rv">Mechanic workspace</h2>
+    <p class="sec-sub rv">Your jobs inbox, availability and earnings. Accept a job and the customer's booking advances instantly.</p>
+    <div class="form-card" style="margin-top:30px">
+      <div class="fgrid">
+        <div>
+          <label class="fl" for="partnerSel">Your partner profile</label>
+          <select class="inp" id="partnerSel"></select>
+        </div>
+        <div>
+          <label class="fl">Availability</label>
+          <label style="display:inline-flex;gap:9px;align-items:center;font-weight:600;font-size:15px;cursor:pointer;padding-top:8px">
+            <input type="checkbox" id="availToggle" style="accent-color:var(--signal);width:19px;height:19px"> <span id="availLabel">Available — shown in finder</span>
+          </label>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:22px">
+        <button class="btn primary" type="button" id="tabJobs" style="margin-left:0">Jobs inbox</button>
+        <button class="btn" type="button" id="tabEarnings">Earnings</button>
+      </div>
+      <div id="jobsPane" style="margin-top:20px"><div id="jobsList"></div></div>
+      <div id="earnPane" style="margin-top:20px;display:none"><div id="earnBody"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ADMIN DISPATCH ================= -->
+<section class="block" id="admin" style="display:none">
+  <div class="wrap">
+    <p class="kicker rv">Admin</p>
+    <h2 class="sec-h rv">Dispatch console</h2>
+    <p class="sec-sub rv">Every booking on the platform. Reassign a mechanic, override a status, approve partner joins, and edit the fixed price table — finder cards and booking summaries stay in lock-step.</p>
+    <h3 style="font-family:var(--font-display);font-weight:400;font-size:19px;letter-spacing:-.02em;margin:34px 0 12px">All bookings</h3>
+    <div style="overflow-x:auto"><table class="dtable" id="adminTable"><thead><tr><th>Booking</th><th>Customer</th><th>Problem</th><th>Slot</th><th>Mechanic</th><th>Status</th><th>Paid</th><th>Price</th></tr></thead><tbody id="adminTableBody"></tbody></table></div>
+    <h3 style="font-family:var(--font-display);font-weight:400;font-size:19px;letter-spacing:-.02em;margin:38px 0 12px">Join requests</h3>
+    <div id="joinQueue"></div>
+    <h3 style="font-family:var(--font-display);font-weight:400;font-size:19px;letter-spacing:-.02em;margin:38px 0 12px">Price-table editor</h3>
+    <div class="form-card" style="margin-top:0">
+      <div class="fgrid">
+        <div><label class="fl" for="peProblem">Problem</label><select class="inp" id="peProblem"></select></div>
+        <div><label class="fl" for="peVehicle">Vehicle</label><select class="inp" id="peVehicle"><option>Bike</option><option>Car</option></select></div>
+        <div><label class="fl" for="peTier">Mechanic tier</label><select class="inp" id="peTier"><option value="0">Budget (tier 0)</option><option value="1">Standard (tier 1)</option><option value="2">Premium (tier 2)</option></select></div>
+        <div><label class="fl" for="pePrice">Fixed charge (₹)</label><input class="inp" id="pePrice" type="number" min="0" step="1"></div>
+      </div>
+      <p class="demo-note" id="peCurrent" style="margin-top:12px"></p>
+      <button class="btn primary" type="button" id="peSave" style="margin:16px 0 0;padding:13px 26px">Save price</button>
+      <button class="btn" type="button" id="peReset" style="margin-top:16px">Reset overrides</button>
+    </div>
   </div>
 </section>
 
@@ -510,6 +601,24 @@ html.fx .rv.visible{opacity:1;transform:none}
   <div class="modal" role="dialog" aria-modal="true" aria-label="Confirm booking">
     <button class="x" data-close="bookBack" aria-label="Close">✕</button>
     <div id="bookModalBody"></div>
+  </div>
+</div>
+<div class="mback" id="wizBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Book a mechanic">
+    <button class="x" data-close="wizBack" aria-label="Close">✕</button>
+    <div id="wizBody"></div>
+  </div>
+</div>
+<div class="mback" id="reschedBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Reschedule booking">
+    <button class="x" data-close="reschedBack" aria-label="Close">✕</button>
+    <div id="reschedBody"></div>
+  </div>
+</div>
+<div class="mback" id="authBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Login or register">
+    <button class="x" data-close="authBack" aria-label="Close">✕</button>
+    <div id="authBody"></div>
   </div>
 </div>
 
@@ -655,16 +764,21 @@ function openLabel(m,now){
   if(m.close>=24) return "Open 24×7";
   return isOpen(m,now)?("Open now · till "+fmtHour(m.close)):("Closed · opens "+fmtHour(m.open));
 }
-function priceFor(m,problemId){ var t=PRICES[problemId]||PRICES.general; return t[m.tier]||t[1]; }
+function priceOverrides(){ try{ var s=JSON.parse(localStorage.getItem("mechnow_prices_v1")||"null"); return (s&&s.overrides)||{}; }catch(e){ return {}; } }
+function priceFor(m,problemId,vehicleType){
+  if(vehicleType){ var ov=priceOverrides()[problemId+"|"+vehicleType+"|"+m.tier]; if(ov!=null) return ov; }
+  var t=PRICES[problemId]||PRICES.general; return t[m.tier]!=null?t[m.tier]:t[1];
+}
 function inr(n){ return "₹"+Number(n).toLocaleString("en-IN"); }
 function getResults(){
   var list=allMechanics().filter(function(m){
     if(m.city!==filters.city) return false;
     if(filters.area!=="All areas" && m.area!==filters.area) return false;
     if(filters.openNow && !isOpen(m)) return false;
+    if(filters.openNow && typeof isPartnerAvailable==="function" && !isPartnerAvailable(m)) return false;
     if(filters.mobile && !m.mobile) return false;
     if(filters.ev && !m.ev) return false;
-    if(filters.top && !(m.rating && m.rating>=4.6)) return false;
+    if(filters.top){ var rr=(typeof displayRating==="function")?displayRating(m):m.rating; if(!(rr && rr>=4.6)) return false; }
     return true;
   });
   list.sort(function(a,b){ return a.dist-b.dist; });
@@ -682,7 +796,7 @@ function buildBooking(mechId,details){
   state.bookings.unshift(b); save(); return b;
 }
 function cancelBooking(id){
-  for(var i=0;i<state.bookings.length;i++) if(state.bookings[i].id===id){ state.bookings[i].cancelled=true; save(); return true; }
+  for(var i=0;i<state.bookings.length;i++) if(state.bookings[i].id===id){ state.bookings[i].cancelled=true; if(state.bookings[i].v2) state.bookings[i].status="Cancelled"; save(); return true; }
   return false;
 }
 function addMechanic(data){
@@ -778,10 +892,12 @@ function setVehicle(v){
 
 /* ---------- results ---------- */
 function cardHTML(m){
-  var price=priceFor(m,filters.problem);
+  var price=priceFor(m,filters.problem,filters.vehicle);
   var open=isOpen(m);
   var tags=m.tags.map(function(t){ return '<span class="tag'+(t.indexOf("EV")===0?" ev":"")+'">'+esc(t)+"</span>"; }).join("");
-  var rating=m.rating?('<span class="stars">'+stars(m.rating)+'</span> <b>'+m.rating.toFixed(1)+'</b> ('+m.reviews+' jobs)')
+  var dr=(typeof displayRating==="function")?displayRating(m):m.rating;
+  var dc=(typeof displayReviewCount==="function")?displayReviewCount(m):m.reviews;
+  var rating=dr?('<span class="stars">'+stars(dr)+'</span> <b>'+dr.toFixed(1)+'</b> ('+dc+' jobs)')
                       :('<span class="pill newb">New partner</span>');
   return '<article class="mcard'+(m._flash?" newflash":"")+'" data-id="'+m.id+'">'
    +'<div class="mc-top"><div class="avatar">'+AVATAR+'</div><div>'
@@ -789,7 +905,7 @@ function cardHTML(m){
    +'<div class="mc-kind">'+esc(m.kind)+' · '+esc(m.area)+', '+esc(m.city)+'</div></div></div>'
    +'<div class="tags">'+tags+(m.mobile?'<span class="tag">Mobile — comes to you</span>':"")+'</div>'
    +'<div class="stats"><span><b>'+m.dist.toFixed(1)+' km</b> away</span><span>ETA <b>'+m.eta+' min</b></span><span>'+rating+'</span></div>'
-   +'<div><span class="pill '+(open?"open":"closed")+'">'+esc(openLabel(m))+'</span></div>'
+   +'<div><span class="pill '+(open?"open":"closed")+'">'+esc(openLabel(m))+'</span>'+(typeof isPartnerAvailable==="function"&&!isPartnerAvailable(m)?' <span class="pill closed">Unavailable</span>':"")+'</div>'
    +'<div class="mc-foot"><div class="price">'+inr(price)+'<small>Fixed charge · '+esc(PROBLEM_LABEL[filters.problem])+'</small></div>'
    +'<button class="btn" data-act="view" data-id="'+m.id+'">Details</button>'
    +'<button class="btn primary" data-act="book" data-id="'+m.id+'">Book</button></div></article>';
@@ -808,7 +924,7 @@ function openBack(id){ $("#"+id).classList.add("open"); document.body.style.over
 function closeBack(id){ $("#"+id).classList.remove("open"); document.body.style.overflow=""; }
 function svcRows(m){
   return PROBLEMS.map(function(p){
-    return '<div class="svc"><span>'+esc(p.label)+(p.id===filters.problem?' <span class="mono" style="color:var(--signal);font-size:10px">· SELECTED</span>':"")+'</span><b>'+inr(priceFor(m,p.id))+'</b></div>';
+    return '<div class="svc"><span>'+esc(p.label)+(p.id===filters.problem?' <span class="mono" style="color:var(--signal);font-size:10px">· SELECTED</span>':"")+'</span><b>'+inr(priceFor(m,p.id,filters.vehicle))+'</b></div>';
   }).join("");
 }
 function openDetail(id){
@@ -820,7 +936,7 @@ function openDetail(id){
     '<p class="kicker">'+esc(m.kind)+' · '+esc(m.area)+'</p>'
    +'<h3>'+esc(m.name)+' '+VBADGE+'</h3>'
    +'<div class="stats" style="margin:12px 0"><span><b>'+m.dist.toFixed(1)+' km</b> away</span><span>ETA <b>'+m.eta+' min</b></span>'
-   +(m.rating?'<span><span class="stars">'+stars(m.rating)+'</span> <b>'+m.rating.toFixed(1)+'</b> ('+m.reviews+' jobs)</span>':'<span class="pill newb">New partner</span>')
+   +((typeof displayRating==="function"?displayRating(m):m.rating)?'<span><span class="stars">'+stars(typeof displayRating==="function"?displayRating(m):m.rating)+'</span> <b>'+(typeof displayRating==="function"?displayRating(m):m.rating).toFixed(1)+'</b> ('+(typeof displayReviewCount==="function"?displayReviewCount(m):m.reviews)+' jobs)</span>':'<span class="pill newb">New partner</span>')
    +'<span class="pill '+(isOpen(m)?"open":"closed")+'">'+esc(openLabel(m))+'</span></div>'
    +'<p style="color:var(--muted);font-size:15px">'+esc(ABOUT_BY_KIND[m.kind]||ABOUT_BY_KIND["Garage"])+'</p>'
    +'<h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:22px 0 4px">Services &amp; fixed charges</h4>'
@@ -866,12 +982,13 @@ function openBooking(id){
 /* ---------- bookings ---------- */
 var lastBookingKey="";
 function renderBookings(){
-  var list=state.bookings, box=$("#bookingsList");
+  var list=(typeof visibleBookings==="function")?visibleBookings():state.bookings, box=$("#bookingsList");
   $("#bookingsEmpty").style.display=list.length?"none":"block";
-  var key=list.map(function(b){ return b.id+":"+(b.cancelled?"x":bookingStatus(b)); }).join("|");
+  var key=list.map(function(b){ return b.id+":"+(b.cancelled?"x":(b.v2?(typeof getDisplayStatus==="function"?getDisplayStatus(b):(b.status||"")):bookingStatus(b)))+":"+(b.slotDate||"")+" "+(b.slotTime||"")+" "+(b.rating||"")+" "+(b.mechId||""); }).join("|");
   if(key===lastBookingKey && box.innerHTML) return;
   lastBookingKey=key;
   box.innerHTML=list.map(function(b){
+    if(b.v2 && typeof bookingCardV2==="function") return bookingCardV2(b);
     var st=bookingStatus(b);
     var steps=STATUS_STEPS.map(function(label,i){
       var cls=b.cancelled?"":(i<st?"done":(i===st?(st===STATUS_STEPS.length-1?"done":"done now"):""));
@@ -884,7 +1001,8 @@ function renderBookings(){
         ? '<p style="margin-top:14px;color:var(--danger);font-weight:700">Booking cancelled</p>'
         : '<div class="timeline">'+steps+'</div>'
           +'<p class="demo-note" style="margin-top:8px">'+(st>=STATUS_STEPS.length-1?"JOB COMPLETED — PAY THE MECHANIC "+inr(b.price)+" IF YOU HAVEN'T ALREADY.":"DEMO MODE — STATUS ADVANCES ABOUT EVERY 20 SECONDS. CURRENT: "+STATUS_STEPS[st].toUpperCase())+'</p>'
-          +(st<STATUS_STEPS.length-1?'<button class="btn danger" data-act="cancel" data-id="'+b.id+'" style="margin-top:12px">Cancel booking</button>':""))
+          +(st<STATUS_STEPS.length-1?'<button class="btn danger" data-act="cancel" data-id="'+b.id+'" style="margin-top:12px">Cancel booking</button>':"")
+          +((st>=STATUS_STEPS.length-1&&typeof ratingWidgetHTML==="function")?ratingWidgetHTML(b):""))
      +'</div>';
   }).join("");
 }
@@ -957,7 +1075,7 @@ function initChrome(){
     var btn=e.target.closest("[data-act]"); if(!btn) return;
     var act=btn.getAttribute("data-act"), id=btn.getAttribute("data-id");
     if(act==="view") openDetail(id);
-    else if(act==="book"){ closeBack("mechBack"); openBooking(id); }
+    else if(act==="book"){ closeBack("mechBack"); if(typeof openBookingV2==="function") openBookingV2(id); else openBooking(id); }
     else if(act==="cancel"){ if(cancelBooking(id)){ lastBookingKey=""; renderBookings(); toast("Booking cancelled."); } }
   });
   setInterval(renderBookings,4000);
@@ -1018,6 +1136,434 @@ if(typeof document!=="undefined" && document.getElementById && document.getEleme
     ring.classList.toggle("active", !!e.target.closest("a,button,select,input,textarea,label,summary,[data-act]"));
   },{passive:true});
 })();
+</script>
+<script>
+"use strict";
+/* ================= MechNow v2 — booking flow, auth, partner, admin =================
+   New state lives in NEW namespaced keys only; mechnow_v1 is never restructured.
+   Legacy bookings keep the original timer lifecycle (bookingStatus/STATUS_STEPS). */
+var V2_STEPS=["Scheduled","Mechanic assigned","On the way","In service","Done"];
+var SLOT_TIMES=["08:00–10:00","10:00–12:00","12:00–14:00","14:00–16:00","16:00–18:00","18:00–20:00"];
+var COMMISSION_RATE=0.10; /* the commission the app already states (join band + FAQ) */
+var PLUS_PRICE=999;
+var DEMO_PARTNER_ID="m3"; /* RoadRunner Mobile Mech — seeded demo partner profile */
+var AUTH_KEY="mechnow_auth_v1", GARAGE_KEY="mechnow_garage_v1", PARTNER_KEY="mechnow_partner_v1",
+    PRICE_KEY="mechnow_prices_v1", JOIN_KEY="mechnow_joins_v1", DISPATCH_KEY="mechnow_dispatch_v1",
+    ROLE_KEY="mechnow_role_v1";
+function loadJSON(key,fallback){ try{ var v=JSON.parse(localStorage.getItem(key)||"null"); return v==null?fallback:v; }catch(e){ return fallback; } }
+function saveJSON(key,val){ try{ localStorage.setItem(key,JSON.stringify(val)); }catch(e){} }
+function pad2(n){ return (n<10?"0":"")+n; }
+function fmtDateStr(d){ return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
+function fmtDateLabel(dateStr){ try{ return new Date(dateStr+"T12:00:00").toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"}); }catch(e){ return dateStr; } }
+function nextDates(n){ var out=[],t=new Date(); for(var i=0;i<n;i++){ var d=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i); out.push({dateStr:fmtDateStr(d),label:fmtDateLabel(fmtDateStr(d))}); } return out; }
+function commissionFor(price){ return Math.round(Number(price)*COMMISSION_RATE); }
+function netFor(price){ return Number(price)-commissionFor(price); }
+
+/* ---------- auth (demo-grade, local only) ---------- */
+function defaultAuth(){ return {users:[{id:"u-demo",name:"Demo Customer",email:"demo@mechnow.in",pass:"demo123",plus:false}],session:null,plusGuest:false}; }
+function loadAuth(){ var a=loadJSON(AUTH_KEY,null); if(!a||!Array.isArray(a.users)) { a=defaultAuth(); saveJSON(AUTH_KEY,a); } return a; }
+function currentUser(){ var a=loadAuth(); if(!a.session) return null; for(var i=0;i<a.users.length;i++) if(a.users[i].id===a.session) return a.users[i]; return null; }
+function ownerId(){ var u=currentUser(); return u?u.id:"guest"; }
+function doLogin(email,pass){ var a=loadAuth(); email=String(email||"").trim().toLowerCase();
+  for(var i=0;i<a.users.length;i++){ if(a.users[i].email.toLowerCase()===email && a.users[i].pass===pass){ a.session=a.users[i].id; saveJSON(AUTH_KEY,a); return a.users[i]; } }
+  return null; }
+function doRegister(name,email,pass){ var a=loadAuth(); email=String(email||"").trim().toLowerCase();
+  for(var i=0;i<a.users.length;i++) if(a.users[i].email.toLowerCase()===email) return null;
+  var u={id:"u"+Date.now().toString(36),name:String(name||"Customer").trim()||"Customer",email:email,pass:pass,plus:false};
+  a.users.push(u); a.session=u.id; saveJSON(AUTH_KEY,a); return u; }
+function doLogout(){ var a=loadAuth(); a.session=null; saveJSON(AUTH_KEY,a); }
+function isPlus(){ var u=currentUser(); if(u) return !!u.plus; return !!loadAuth().plusGuest; }
+function purchasePlus(){ var a=loadAuth(); if(a.session){ for(var i=0;i<a.users.length;i++) if(a.users[i].id===a.session) a.users[i].plus=true; } else a.plusGuest=true; saveJSON(AUTH_KEY,a); }
+function updateAuthUI(){ var u=currentUser(); var b=$("#authBtn"), s=$("#authUser"); if(!b) return;
+  b.textContent=u?"Logout":"Login";
+  s.textContent=u?(u.name+(u.plus?" · PLUS":"")):"Guest"; }
+function openAuth(){ var body=$("#authBody"); if(!body) return;
+  body.innerHTML='<p class="kicker">Your account</p><h3>Login</h3>'
+   +'<div class="review" style="margin:14px 0">Demo account (demo only) — email <b>demo@mechnow.in</b> · password <b>demo123</b></div>'
+   +'<div style="display:grid;gap:12px">'
+   +'<div id="authNameRow" style="display:none"><label class="fl" for="auName">Your name</label><input class="inp" id="auName" type="text" placeholder="e.g. Vikranth"></div>'
+   +'<div><label class="fl" for="auEmail">Email</label><input class="inp" id="auEmail" type="email" placeholder="you@example.com"></div>'
+   +'<div><label class="fl" for="auPass">Password</label><input class="inp" id="auPass" type="password" placeholder="Password"></div></div>'
+   +'<button class="btn primary" id="auSubmit" style="width:100%;margin:20px 0 4px;padding:15px;font-size:15px">Login</button>'
+   +'<button class="btn" id="auToggle" style="width:100%;margin-top:8px">New here? Register instead</button>'
+   +'<p class="demo-note" style="text-align:center;margin-top:10px">DEMO AUTH — ACCOUNTS LIVE ONLY IN THIS BROWSER.</p>';
+  openBack("authBack");
+  var mode="login";
+  $("#auToggle").addEventListener("click",function(){ mode=(mode==="login")?"register":"login";
+    $("#authNameRow").style.display=(mode==="register")?"block":"none";
+    $("#auSubmit").textContent=(mode==="register")?"Register & login":"Login";
+    this.textContent=(mode==="register")?"Already registered? Login instead":"New here? Register instead"; });
+  $("#auSubmit").addEventListener("click",function(){
+    var email=$("#auEmail").value, pass=$("#auPass").value;
+    var u=(mode==="register")?doRegister($("#auName").value,email,pass):doLogin(email,pass);
+    if(!u){ toast(mode==="register"?"That email is already registered — try logging in.":"Login failed — check the demo credentials."); return; }
+    updateAuthUI(); lastBookingKey=""; renderBookings(); renderGarage(); closeBack("authBack");
+    toast("Welcome, "+u.name+"."); });
+}
+
+/* ---------- garage (saved vehicles, per user) ---------- */
+function loadGarage(){ var g=loadJSON(GARAGE_KEY,null); if(!g||!Array.isArray(g.vehicles)){ g={vehicles:[]}; saveJSON(GARAGE_KEY,g); } return g; }
+function listVehicles(owner){ owner=owner||ownerId(); return loadGarage().vehicles.filter(function(v){ return v.owner===owner; }); }
+function saveVehicle(data){ var g=loadGarage();
+  var v={id:"v"+Date.now().toString(36)+Math.floor(Math.random()*999),owner:ownerId(),type:data.type==="Car"?"Car":"Bike",brand:String(data.brand||"").trim(),model:String(data.model||"").trim(),fuel:data.fuel||"Petrol"};
+  g.vehicles.push(v); saveJSON(GARAGE_KEY,g); return v; }
+function deleteVehicle(id){ var g=loadGarage(); g.vehicles=g.vehicles.filter(function(v){ return v.id!==id; }); saveJSON(GARAGE_KEY,g); }
+function vehicleLabel(v){ if(!v) return ""; return v.type+" · "+v.brand+" "+v.model+" ("+v.fuel+")"; }
+function renderGarage(){ var box=$("#garageBox"); if(!box) return; var vs=listVehicles();
+  if(!vs.length){ box.innerHTML='<p class="kicker">My garage</p><p style="color:var(--muted);font-size:14.5px;margin-top:8px">No saved vehicles yet — add one during booking and it will be saved here for next time.</p>'; return; }
+  box.innerHTML='<p class="kicker">My garage</p>'+vs.map(function(v){
+    return '<span class="veh-row" style="display:inline-flex;margin:10px 8px 0 0;padding:9px 13px"><span style="font-weight:600;font-size:14px">'+esc(vehicleLabel(v))+'</span><button class="btn danger" type="button" data-gdel="'+v.id+'" style="padding:4px 10px;font-size:12px">Remove</button></span>';
+  }).join(""); }
+
+/* ---------- slots ---------- */
+function slotSeedUnavailable(mechId,dateStr,slotLabel){ var s=mechId+"|"+dateStr+"|"+slotLabel,h=0; for(var i=0;i<s.length;i++){ h=((h*31)+s.charCodeAt(i))>>>0; } return h%6===0; }
+function isSlotAvailable(mechId,dateStr,slotLabel){ if(!slotLabel||slotLabel==="ASAP") return true;
+  if(slotSeedUnavailable(mechId,dateStr,slotLabel)) return false;
+  for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(!b.cancelled&&b.mechId===mechId&&b.slotDate===dateStr&&b.slotTime===slotLabel) return false; }
+  return true; }
+function slotButtonsHTML(mechId,dateStr,selected){ return SLOT_TIMES.map(function(s){ var av=isSlotAvailable(mechId,dateStr,s);
+  return '<button type="button" class="slot-btn'+(selected===s?" on":"")+'" data-slot="'+esc(s)+'"'+(av?"":" disabled")+'>'+esc(s)+(av?"":" · Full")+'</button>'; }).join(""); }
+function dateButtonsHTML(selected){ return nextDates(7).map(function(d){ return '<button type="button" class="date-btn'+(selected===d.dateStr?" on":"")+'" data-date="'+d.dateStr+'">'+esc(d.label)+'</button>'; }).join(""); }
+
+/* ---------- ratings (local adjustments from completed-booking ratings) ---------- */
+function ratedBookingsFor(mechId){ return state.bookings.filter(function(b){ return b.mechId===mechId&&!b.cancelled&&b.rating; }); }
+function displayRating(m){ var extra=ratedBookingsFor(m.id); if(!extra.length) return m.rating;
+  var sum=extra.reduce(function(a,b){ return a+Number(b.rating); },0);
+  if(m.rating==null) return Math.round((sum/extra.length)*10)/10;
+  return Math.round(((m.rating*m.reviews+sum)/(m.reviews+extra.length))*10)/10; }
+function displayReviewCount(m){ return m.reviews+ratedBookingsFor(m.id).length; }
+function rateBooking(id,starsVal,text){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i];
+    if(b.id===id){ b.rating=Math.max(1,Math.min(5,parseInt(starsVal,10)||5)); b.ratingText=String(text||""); save(); return b; } } return null; }
+function ratingWidgetHTML(b){ if(b.rating){ return '<div style="margin-top:14px"><span class="stars">'+stars(b.rating)+'</span> <span style="font-size:13.5px;color:var(--muted)">Your rating'+(b.ratingText?' — “'+esc(b.ratingText)+'”':"")+'</span></div>'; }
+  var wid="rate-"+b.id;
+  return '<div style="margin-top:14px" id="'+wid+'"><p class="fl" style="margin-bottom:4px">Rate this job</p>'
+   +'<div>'+[1,2,3,4,5].map(function(n){ return '<button type="button" class="star-btn" data-rate-star="'+b.id+'" data-v="'+n+'" aria-label="'+n+' stars">★</button>'; }).join("")+'</div>'
+   +'<textarea class="inp" data-rate-text="'+b.id+'" rows="2" placeholder="How was the work? (optional)" style="margin-top:8px"></textarea>'
+   +'<button class="btn primary" type="button" data-rate-submit="'+b.id+'" style="margin:10px 0 0;padding:10px 18px">Submit rating</button></div>'; }
+
+/* ---------- booking v2 ---------- */
+function computeSummary(mechId,problem,vehicleType,opts){ opts=opts||{}; var m=findMech(mechId);
+  var service=priceFor(m,problem,vehicleType);
+  var plusDiscount=((opts.plus||opts.buyPlus)&&problem==="general")?m.visit:0;
+  var plusPrice=opts.buyPlus?PLUS_PRICE:0;
+  return {service:service,visit:m.visit,plusDiscount:plusDiscount,plusPrice:plusPrice,total:service-plusDiscount+plusPrice}; }
+function buildBookingV2(details){ var m=findMech(details.mechId); if(!m) return null;
+  var u=currentUser(); var plusActive=isPlus()||!!details.buyPlus;
+  var sum=computeSummary(m.id,details.problem,details.vehicleType,{plus:isPlus(),buyPlus:!!details.buyPlus});
+  var b={id:"b"+Date.now().toString(36)+Math.floor(Math.random()*99),v2:true,mechId:m.id,mechName:m.name,
+    problem:details.problem,problemLabel:PROBLEM_LABEL[details.problem]||details.problem,
+    vehicle:details.vehicleLabel||details.vehicleType,vehicleType:details.vehicleType,vehicleId:details.vehicleId||null,
+    city:details.city||m.city,area:details.area||m.area,
+    price:sum.service,visit:m.visit,plusDiscount:sum.plusDiscount,amountPaid:sum.total,paid:true,payMethod:details.payMethod||"upi",
+    slotDate:details.slotDate,slotTime:details.slotTime,asap:!!details.asap,
+    status:"Scheduled",managed:false,statusAt:Date.now(),priority:plusActive,
+    userId:ownerId(),userName:u?u.name:"",name:details.name||(u?u.name:""),phone:details.phone||"",note:details.note||"",
+    createdAt:Date.now(),cancelled:false,declined:false,needsReassign:false};
+  state.bookings.unshift(b); save(); return b; }
+function getDisplayStatus(b,nowMs){ if(b.cancelled) return "Cancelled"; if(!b.v2) return STATUS_STEPS[bookingStatus(b,nowMs)];
+  if(b.managed) return b.status||"Scheduled";
+  var idx=Math.floor(((nowMs||Date.now())-b.createdAt)/STEP_MS); if(idx<0) idx=0; if(idx>V2_STEPS.length-1) idx=V2_STEPS.length-1;
+  var cur=V2_STEPS.indexOf(b.status||"Scheduled"); if(cur<0) cur=0;
+  return V2_STEPS[Math.max(idx,cur)]; }
+function autoAdvanceV2(nowMs){ var changed=false;
+  state.bookings.forEach(function(b){ if(b.v2&&!b.managed&&!b.cancelled){ var s=getDisplayStatus(b,nowMs); if(s!==b.status){ b.status=s; b.statusAt=nowMs||Date.now(); changed=true; } } });
+  if(changed) save(); return changed; }
+function visibleBookings(){ var u=currentUser();
+  return state.bookings.filter(function(b){ if(!b.userId) return true; if(u) return b.userId===u.id; return b.userId==="guest"; }); }
+function isDoneBooking(b){ if(b.cancelled) return false; if(b.v2) return getDisplayStatus(b)==="Done"; return bookingStatus(b)>=STATUS_STEPS.length-1; }
+function rescheduleBooking(id,dateStr,slotLabel){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i];
+    if(b.id===id){ b.slotDate=dateStr; b.slotTime=slotLabel; b.asap=(slotLabel==="ASAP"); save(); return b; } } return null; }
+function bookingCardV2(b){ var ds=getDisplayStatus(b); var idx=V2_STEPS.indexOf(ds);
+  var steps=V2_STEPS.map(function(label,i){ var cls=ds==="Cancelled"?"":(i<idx?"done":(i===idx?(idx===V2_STEPS.length-1?"done":"done now"):"")); return '<div class="tstep '+cls+'">'+label+'</div>'; }).join("");
+  var slotLine=b.asap?("ASAP · today, next available"):((b.slotDate?fmtDateLabel(b.slotDate):"")+" · "+(b.slotTime||""));
+  return '<div class="bcard"><div class="bcard-top"><span class="bn">'+esc(b.mechName)+'</span>'
+   +'<span class="bm">'+esc(b.problemLabel)+' · '+esc(b.vehicle)+' · '+esc(b.area)+', '+esc(b.city)+'</span>'
+   +'<span class="bp">'+inr(b.price)+'</span></div>'
+   +'<p style="margin-top:8px;font-size:13.5px;color:var(--muted)">'+esc(slotLine)+' · <span style="color:var(--ok);font-weight:700">Paid '+inr(b.amountPaid!=null?b.amountPaid:b.price)+'</span>'
+   +(b.priority?' <span class="ptag">Priority dispatch · Plus</span>':"")+(b.plusDiscount?' · Plus inspection waiver −'+inr(b.plusDiscount):"")+'</p>'
+   +(b.cancelled?'<p style="margin-top:12px;color:var(--danger);font-weight:700">Booking cancelled</p>'
+     : b.declined?'<p style="margin-top:12px;color:var(--danger);font-weight:700">The mechanic declined this job — dispatch is reassigning it.</p><div class="timeline">'+steps+'</div>'
+     : '<div class="timeline">'+steps+'</div><p class="demo-note" style="margin-top:8px">CURRENT: '+esc(ds.toUpperCase())+'</p>'
+       +(ds!=="Done"?'<button class="btn" data-act2="resched" data-id="'+b.id+'" style="margin-top:12px">Reschedule</button> <button class="btn danger" data-act="cancel" data-id="'+b.id+'" style="margin-top:12px">Cancel booking</button>':"")
+       +(ds==="Done"?ratingWidgetHTML(b):""))
+   +'</div>'; }
+
+/* ---------- booking wizard (problem → vehicle → slot → payment) ---------- */
+var wiz=null;
+function openBookingV2(mechId){ var m=findMech(mechId); if(!m) return;
+  var vs=listVehicles();
+  wiz={mechId:mechId,step:1,vehicleId:vs.length?vs[0].id:"new",newType:filters.vehicle,date:fmtDateStr(new Date()),slot:null,asap:false,payMethod:"upi",buyPlus:false,stars:0};
+  renderWiz(); openBack("wizBack"); }
+function wizVehicle(){ if(!wiz) return null; if(wiz.vehicleId&&wiz.vehicleId!=="new"){ var vs=listVehicles(); for(var i=0;i<vs.length;i++) if(vs[i].id===wiz.vehicleId) return vs[i]; } return null; }
+function wizStepsHTML(){ var names=["Vehicle","Slot","Payment"]; return '<div class="wiz-steps">'+names.map(function(n,i){ return '<span class="'+(wiz.step===i+1?"on":"")+'">'+(i+1)+" · "+n+'</span>'; }).join("")+'</div>'; }
+function renderWiz(){ var body=$("#wizBody"); if(!body||!wiz) return; var m=findMech(wiz.mechId); if(!m) return;
+  var head='<p class="kicker">Book · '+esc(PROBLEM_LABEL[filters.problem]||"")+'</p><h3>'+esc(m.name)+'</h3>'+wizStepsHTML();
+  if(wiz.step===1){ var vs=listVehicles();
+    body.innerHTML=head
+     +'<p class="fl">Your vehicle</p>'
+     +vs.map(function(v){ return '<label class="veh-row'+(wiz.vehicleId===v.id?" on":"")+'"><input type="radio" name="wizVeh" value="'+v.id+'"'+(wiz.vehicleId===v.id?" checked":"")+'><span style="font-weight:600">'+esc(vehicleLabel(v))+'</span></label>'; }).join("")
+     +'<label class="veh-row'+(wiz.vehicleId==="new"?" on":"")+'"><input type="radio" name="wizVeh" value="new"'+(wiz.vehicleId==="new"?" checked":"")+'><span style="font-weight:600">＋ Add a new vehicle</span></label>'
+     +'<div id="wizNewVeh" style="display:'+(wiz.vehicleId==="new"?"block":"none")+';margin-top:6px">'
+     +'<div class="seg" style="margin-bottom:10px"><button type="button" id="nvBike" class="'+(wiz.newType==="Bike"?"on":"")+'">Bike</button><button type="button" id="nvCar" class="'+(wiz.newType==="Car"?"on":"")+'">Car</button></div>'
+     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input class="inp" id="nvBrand" type="text" placeholder="Brand (e.g. Hyundai)"><input class="inp" id="nvModel" type="text" placeholder="Model (e.g. i20)"></div>'
+     +'<label class="fl" for="nvFuel" style="margin-top:10px">Fuel</label><select class="inp" id="nvFuel"><option>Petrol</option><option>Diesel</option><option>EV</option></select></div>'
+     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><div><label class="fl" for="wizName">Your name</label><input class="inp" id="wizName" type="text" placeholder="Your name" value="'+esc((currentUser()||{}).name||"")+'"></div>'
+     +'<div><label class="fl" for="wizPhone">Phone (optional)</label><input class="inp" id="wizPhone" type="tel" placeholder="Phone"></div></div>'
+     +'<button class="btn primary" id="wizNext1" style="width:100%;margin:20px 0 4px;padding:15px;font-size:15px">Continue to slot →</button>';
+    body.querySelectorAll('input[name="wizVeh"]').forEach(function(r){ r.addEventListener("change",function(){ wiz.vehicleId=this.value; renderWiz(); }); });
+    var nb=$("#nvBike"), nc=$("#nvCar");
+    if(nb) nb.addEventListener("click",function(){ wiz.newType="Bike"; renderWiz(); });
+    if(nc) nc.addEventListener("click",function(){ wiz.newType="Car"; renderWiz(); });
+    $("#wizNext1").addEventListener("click",function(){
+      if(wiz.vehicleId==="new"){ var brand=$("#nvBrand").value.trim(), model=$("#nvModel").value.trim();
+        if(!brand||!model){ toast("Add your vehicle brand and model, or pick a saved vehicle."); return; }
+        var v=saveVehicle({type:wiz.newType,brand:brand,model:model,fuel:$("#nvFuel").value}); wiz.vehicleId=v.id; renderGarage(); }
+      wiz.name=$("#wizName")?$("#wizName").value.trim():""; wiz.phone=$("#wizPhone")?$("#wizPhone").value.trim():"";
+      wiz.step=2; renderWiz(); });
+  }
+  else if(wiz.step===2){
+    body.innerHTML=head
+     +'<button class="btn" id="wizAsap" type="button" style="width:100%;padding:13px;'+(wiz.asap?"background:var(--signal);color:var(--on-signal);border-color:var(--signal)":"")+'">⚡ ASAP — today, next available slot</button>'
+     +'<p class="fl" style="margin-top:16px">Or pick a date (next 7 days)</p><div class="date-row" id="wizDates">'+dateButtonsHTML(wiz.date)+'</div>'
+     +'<p class="fl" style="margin-top:14px">Time slot</p><div class="slot-grid" id="wizSlots">'+slotButtonsHTML(wiz.mechId,wiz.date,wiz.slot)+'</div>'
+     +'<p class="demo-note" style="margin-top:10px">A SLOT IS REQUIRED — STRUCK-THROUGH SLOTS ARE UNAVAILABLE FOR THIS MECHANIC.</p>'
+     +'<div style="display:flex;gap:10px;margin-top:18px"><button class="btn" id="wizBack2" style="flex:1">← Vehicle</button><button class="btn primary" id="wizNext2" style="flex:2;margin-left:0">Continue to payment →</button></div>';
+    $("#wizAsap").addEventListener("click",function(){ wiz.asap=true; wiz.slot="ASAP"; wiz.date=fmtDateStr(new Date()); renderWiz(); });
+    body.querySelectorAll("[data-date]").forEach(function(b){ b.addEventListener("click",function(){ wiz.date=b.getAttribute("data-date"); wiz.asap=false; if(wiz.slot&&wiz.slot!=="ASAP"&&!isSlotAvailable(wiz.mechId,wiz.date,wiz.slot)) wiz.slot=null; if(wiz.slot==="ASAP") wiz.slot=null; renderWiz(); }); });
+    body.querySelectorAll("[data-slot]").forEach(function(b){ b.addEventListener("click",function(){ wiz.slot=b.getAttribute("data-slot"); wiz.asap=false; renderWiz(); }); });
+    $("#wizBack2").addEventListener("click",function(){ wiz.step=1; renderWiz(); });
+    $("#wizNext2").addEventListener("click",function(){ if(!wiz.slot){ toast("Pick a time slot (or ASAP) to continue."); return; } wiz.step=3; renderWiz(); });
+  }
+  else if(wiz.step===3){ var veh=wizVehicle(); var vtype=veh?veh.type:wiz.newType;
+    var plus=isPlus(); var sum=computeSummary(wiz.mechId,filters.problem,vtype,{plus:plus,buyPlus:wiz.buyPlus});
+    body.innerHTML=head
+     +'<p class="fl">Order summary</p>'
+     +'<div class="svc"><span>'+esc(PROBLEM_LABEL[filters.problem])+' · '+esc(veh?vehicleLabel(veh):vtype)+' · '+esc(m.name)+'</span><b>'+inr(sum.service)+'</b></div>'
+     +'<div class="svc"><span>Slot</span><b>'+esc(wiz.asap?"ASAP · today":(fmtDateLabel(wiz.date)+" · "+wiz.slot))+'</b></div>'
+     +(sum.plusDiscount?'<div class="svc"><span>MechNow Plus — inspection charge waived</span><b>−'+inr(sum.plusDiscount)+'</b></div>':"")
+     +(wiz.buyPlus?'<div class="svc"><span>MechNow Plus — 1 year</span><b>'+inr(PLUS_PRICE)+'</b></div>':"")
+     +(plus?'<div class="svc"><span>MechNow Plus</span><b>Active · priority dispatch</b></div>'
+       :'<label class="veh-row" style="margin-top:12px"><input type="checkbox" id="wizPlus"'+(wiz.buyPlus?" checked":"")+'><span style="font-weight:600;font-size:14px">Add MechNow Plus · '+inr(PLUS_PRICE)+'/yr — inspection charge waived on general checks + priority dispatch</span></label>')
+     +'<div class="svc" style="border-bottom:0"><span><b>Total</b></span><b>'+inr(sum.total)+'</b></div>'
+     +'<p class="fl" style="margin-top:16px">Demo checkout — no real payment</p>'
+     +'<div class="seg" style="margin-bottom:12px"><button type="button" id="pmUpi" class="'+(wiz.payMethod==="upi"?"on":"")+'">UPI</button><button type="button" id="pmCard" class="'+(wiz.payMethod==="card"?"on":"")+'">Card</button></div>'
+     +(wiz.payMethod==="upi"
+       ? '<input class="inp" id="payUpi" type="text" placeholder="yourname@okbank">'
+       : '<div style="display:grid;gap:10px"><input class="inp" id="payCard" type="text" inputmode="numeric" placeholder="Card number"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input class="inp" id="payExp" type="text" placeholder="MM/YY"><input class="inp" id="payCvv" type="password" placeholder="CVV"></div></div>')
+     +'<div style="display:flex;gap:10px;margin-top:18px"><button class="btn" id="wizBack3" style="flex:1">← Slot</button>'
+     +'<button class="btn primary" id="wizPay" style="flex:2;margin-left:0;padding:15px">Pay '+inr(sum.total)+' · Demo checkout</button></div>'
+     +'<p class="demo-note" style="text-align:center;margin-top:10px">DEMO CHECKOUT — NO REAL PAYMENT IS TAKEN.</p>';
+    var pc=$("#wizPlus"); if(pc) pc.addEventListener("change",function(){ wiz.buyPlus=this.checked; renderWiz(); });
+    $("#pmUpi").addEventListener("click",function(){ wiz.payMethod="upi"; renderWiz(); });
+    $("#pmCard").addEventListener("click",function(){ wiz.payMethod="card"; renderWiz(); });
+    $("#wizBack3").addEventListener("click",function(){ wiz.step=2; renderWiz(); });
+    $("#wizPay").addEventListener("click",function(){ var ok=false;
+      if(wiz.payMethod==="upi"){ var u=$("#payUpi").value.trim(); ok=u.length>=4; if(!ok) $("#payUpi").classList.add("err"); }
+      else { var c=$("#payCard").value.replace(/\D/g,""); ok=c.length>=12; if(!ok) $("#payCard").classList.add("err"); }
+      if(!ok){ toast("Enter demo payment details to continue (any UPI id / 12+ digit card)."); return; }
+      var btn=this; btn.disabled=true; btn.textContent="Processing…";
+      setTimeout(function(){ var veh2=wizVehicle();
+        var b=buildBookingV2({mechId:wiz.mechId,problem:filters.problem,vehicleId:veh2?veh2.id:null,vehicleType:veh2?veh2.type:wiz.newType,vehicleLabel:veh2?vehicleLabel(veh2):wiz.newType,city:filters.city,area:(filters.area==="All areas"?m.area:filters.area),slotDate:wiz.date,slotTime:wiz.asap?"ASAP":wiz.slot,asap:wiz.asap,name:wiz.name||"",phone:wiz.phone||"",payMethod:wiz.payMethod,buyPlus:wiz.buyPlus});
+        if(!b){ toast("Something went wrong — please try again."); btn.disabled=false; return; }
+        if(wiz.buyPlus) purchasePlus();
+        wiz=null; closeBack("wizBack"); updateAuthUI(); lastBookingKey=""; renderBookings();
+        document.getElementById("bookings").scrollIntoView({behavior:"smooth"});
+        toast("Payment successful (demo) — booking "+b.id+" is Scheduled."); },450); });
+  }
+}
+
+/* ---------- reschedule ---------- */
+var resched=null;
+function openReschedule(id){ var b=null; for(var i=0;i<state.bookings.length;i++) if(state.bookings[i].id===id) b=state.bookings[i]; if(!b) return;
+  resched={id:id,date:b.slotDate||fmtDateStr(new Date()),slot:(b.slotTime&&b.slotTime!=="ASAP")?b.slotTime:null,asap:!!b.asap};
+  renderResched(); openBack("reschedBack"); }
+function renderResched(){ var body=$("#reschedBody"); if(!body||!resched) return; var b=null;
+  for(var i=0;i<state.bookings.length;i++) if(state.bookings[i].id===resched.id) b=state.bookings[i]; if(!b) return;
+  body.innerHTML='<p class="kicker">Reschedule</p><h3>'+esc(b.mechName)+'</h3>'
+   +'<button class="btn" id="rsAsap" type="button" style="width:100%;padding:13px;margin-top:16px;'+(resched.asap?"background:var(--signal);color:var(--on-signal);border-color:var(--signal)":"")+'">⚡ ASAP — today, next available slot</button>'
+   +'<p class="fl" style="margin-top:16px">New date</p><div class="date-row">'+dateButtonsHTML(resched.date)+'</div>'
+   +'<p class="fl" style="margin-top:14px">New time slot</p><div class="slot-grid">'+slotButtonsHTML(b.mechId,resched.date,resched.slot)+'</div>'
+   +'<button class="btn primary" id="rsSave" style="width:100%;margin:20px 0 4px;padding:15px;font-size:15px">Save new slot</button>';
+  $("#rsAsap").addEventListener("click",function(){ resched.asap=true; resched.slot="ASAP"; resched.date=fmtDateStr(new Date()); renderResched(); });
+  body.querySelectorAll("[data-date]").forEach(function(x){ x.addEventListener("click",function(){ resched.date=x.getAttribute("data-date"); resched.asap=false; if(resched.slot&&resched.slot!=="ASAP"&&!isSlotAvailable(b.mechId,resched.date,resched.slot)) resched.slot=null; if(resched.slot==="ASAP") resched.slot=null; renderResched(); }); });
+  body.querySelectorAll("[data-slot]").forEach(function(x){ x.addEventListener("click",function(){ resched.slot=x.getAttribute("data-slot"); resched.asap=false; renderResched(); }); });
+  $("#rsSave").addEventListener("click",function(){ if(!resched.asap&&!resched.slot){ toast("Pick a new slot first."); return; }
+    var nb=rescheduleBooking(resched.id,resched.date,resched.asap?"ASAP":resched.slot);
+    if(nb){ lastBookingKey=""; renderBookings(); if(typeof renderAdmin==="function") renderAdmin(); }
+    closeBack("reschedBack"); toast("Booking rescheduled to "+(resched.asap?"ASAP":(fmtDateLabel(resched.date)+" · "+resched.slot))+"."); });
+}
+
+/* ---------- partner (mechanic) side ---------- */
+var JOB_OFFERS=[
+ {id:"o1",problem:"battery",problemLabel:"Battery dead",vehicle:"Car",area:"Hitech City",city:"Hyderabad",price:599,customer:"Nearby customer"},
+ {id:"o2",problem:"flat-tyre",problemLabel:"Flat tyre",vehicle:"Bike",area:"Banjara Hills",city:"Hyderabad",price:399,customer:"Nearby customer"},
+ {id:"o3",problem:"general",problemLabel:"General check",vehicle:"Car",area:"Koramangala",city:"Bengaluru",price:499,customer:"Nearby customer"}
+];
+var PARTNER_HISTORY=[
+ {label:"Battery replacement · Banjara Hills",price:899},
+ {label:"Puncture repair · Hitech City",price:399}
+];
+function loadPartner(){ var p=loadJSON(PARTNER_KEY,null); if(!p||typeof p!=="object") p={}; if(!p.availability) p.availability={}; if(!p.offerStatus) p.offerStatus={}; if(!p.selected) p.selected=DEMO_PARTNER_ID; return p; }
+function savePartner(p){ saveJSON(PARTNER_KEY,p); }
+function isPartnerAvailable(m){ return loadPartner().availability[m.id]!==false; }
+function setAvailability(mechId,on){ var p=loadPartner(); p.availability[mechId]=!!on; savePartner(p); }
+function partnerProfiles(){ var out=[]; var demo=findMech(DEMO_PARTNER_ID); if(demo) out.push(demo);
+  state.custom.forEach(function(m){ if(m.id!==DEMO_PARTNER_ID) out.push(m); }); return out; }
+function selectedPartnerId(){ var p=loadPartner(); var profs=partnerProfiles(); for(var i=0;i<profs.length;i++) if(profs[i].id===p.selected) return p.selected; return profs.length?profs[0].id:DEMO_PARTNER_ID; }
+function offerKey(mechId,offerId){ return mechId+":"+offerId; }
+function earningsFor(mechId){ var rows=[];
+  if(mechId===DEMO_PARTNER_ID) PARTNER_HISTORY.forEach(function(h){ rows.push({label:h.label,price:h.price}); });
+  state.bookings.forEach(function(b){ if(b.mechId===mechId&&isDoneBooking(b)) rows.push({label:(b.problemLabel||"Job")+" · "+(b.area||""),price:b.price}); });
+  var p=loadPartner(); JOB_OFFERS.forEach(function(o){ if(p.offerStatus[offerKey(mechId,o.id)]==="done") rows.push({label:o.problemLabel+" · "+o.area,price:o.price}); });
+  var gross=0,comm=0; rows.forEach(function(r){ gross+=Number(r.price); comm+=commissionFor(r.price); });
+  return {rows:rows,gross:gross,commission:comm,net:gross-comm,count:rows.length}; }
+function partnerAcceptBooking(id){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(b.id===id){ b.managed=true; b.declined=false; b.needsReassign=false; b.status="Mechanic assigned"; b.statusAt=Date.now(); save(); return b; } } return null; }
+function partnerDeclineBooking(id){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(b.id===id){ b.managed=true; b.declined=true; b.needsReassign=true; save(); return b; } } return null; }
+function partnerSetStatus(id,status){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(b.id===id){ b.managed=true; b.status=status; b.statusAt=Date.now(); if(status==="Done") b.completedAt=Date.now(); save(); return b; } } return null; }
+function partnerCompleteBooking(id){ return partnerSetStatus(id,"Done"); }
+function offerAccept(mechId,offerId){ var p=loadPartner(); p.offerStatus[offerKey(mechId,offerId)]="accepted"; savePartner(p); }
+function offerComplete(mechId,offerId){ var p=loadPartner(); p.offerStatus[offerKey(mechId,offerId)]="done"; savePartner(p); }
+function offerDecline(mechId,offerId){ var p=loadPartner(); p.offerStatus[offerKey(mechId,offerId)]="declined"; savePartner(p); }
+function renderPartner(){ var sel=$("#partnerSel"); if(!sel) return; var profs=partnerProfiles(); var cur=selectedPartnerId();
+  sel.innerHTML=profs.map(function(m){ return '<option value="'+m.id+'"'+(m.id===cur?" selected":"")+'>'+esc(m.name)+" · "+esc(m.area)+", "+esc(m.city)+'</option>'; }).join("");
+  var m=findMech(cur); var tog=$("#availToggle"); if(tog&&m){ tog.checked=isPartnerAvailable(m); $("#availLabel").textContent=tog.checked?"Available — shown in finder":"Unavailable — hidden from “available now”"; }
+  renderJobs(); renderEarnings(); }
+function renderJobs(){ var box=$("#jobsList"); if(!box) return; var mid=selectedPartnerId(); var p=loadPartner();
+  var mine=state.bookings.filter(function(b){ return b.mechId===mid&&!b.cancelled; });
+  var html="";
+  JOB_OFFERS.forEach(function(o){ var st=p.offerStatus[offerKey(mid,o.id)]; if(st==="declined"||st==="done") return;
+    html+='<div class="job-card"><b>'+esc(o.problemLabel)+'</b> · '+esc(o.vehicle)+' · '+esc(o.area)+', '+esc(o.city)+' <span class="ptag">New offer</span>'
+     +'<div style="margin-top:6px;color:var(--muted);font-size:13.5px">'+esc(o.customer)+' · Fixed charge <b style="color:var(--ink)">'+inr(o.price)+'</b> · you earn '+inr(netFor(o.price))+' after 10% commission</div>'
+     +(st==="accepted"
+       ? '<div style="margin-top:10px"><button class="btn primary" data-offer-complete="'+o.id+'" style="margin-left:0;padding:10px 16px">Mark complete</button></div>'
+       : '<div style="margin-top:10px"><button class="btn primary" data-offer-accept="'+o.id+'" style="margin-left:0;padding:10px 16px">Accept</button> <button class="btn danger" data-offer-decline="'+o.id+'" style="padding:10px 16px">Decline</button></div>')
+     +'</div>'; });
+  mine.forEach(function(b){ var ds=getDisplayStatus(b);
+    html+='<div class="job-card"><b>'+esc(b.problemLabel||"Job")+'</b> · '+esc(b.vehicle||"")+' · '+esc(b.area||"")+', '+esc(b.city||"")
+     +(b.priority?' <span class="ptag">Priority · Plus</span>':"")+(b.declined?' <span class="ptag" style="background:var(--danger);color:#fff">Declined</span>':"")
+     +'<div style="margin-top:6px;color:var(--muted);font-size:13.5px">Status: <b style="color:var(--ink)">'+esc(ds)+'</b> · Slot: '+esc(b.asap?"ASAP":((b.slotDate?fmtDateLabel(b.slotDate):"")+" "+(b.slotTime||"")))+' · Charge <b style="color:var(--ink)">'+inr(b.price)+'</b></div>'
+     +'<div style="margin-top:10px">'
+     +(ds==="Scheduled"&&!b.declined?'<button class="btn primary" data-paccept="'+b.id+'" style="margin-left:0;padding:10px 16px">Accept</button> <button class="btn danger" data-pdecline="'+b.id+'" style="padding:10px 16px">Decline</button>':"")
+     +(ds==="Mechanic assigned"?'<button class="btn" data-pway="'+b.id+'" style="padding:10px 16px">On the way</button> ':"")
+     +(ds==="On the way"?'<button class="btn" data-pservice="'+b.id+'" style="padding:10px 16px">Start service</button> ':"")
+     +(ds!=="Done"&&!b.declined?'<button class="btn primary" data-pcomplete="'+b.id+'" style="margin-left:0;padding:10px 16px">Mark complete</button>':"")
+     +'</div></div>'; });
+  box.innerHTML=html||'<div class="empty"><b>No jobs right now</b>New nearby offers and bookings assigned to you show up here.</div>'; }
+function renderEarnings(){ var box=$("#earnBody"); if(!box) return; var e=earningsFor(selectedPartnerId());
+  box.innerHTML=(e.rows.length?e.rows.map(function(r){ return '<div class="svc"><span>'+esc(r.label)+'</span><span>Charge <b>'+inr(r.price)+'</b> · Commission (10%) −'+inr(commissionFor(r.price))+' · <b>Net '+inr(netFor(r.price))+'</b></span></div>'; }).join(""):'<p style="color:var(--muted)">No completed jobs yet.</p>')
+   +'<div class="svc" style="border-bottom:0;margin-top:8px"><span><b>Totals · '+e.count+' completed jobs</b></span><span>Gross <b>'+inr(e.gross)+'</b> · Commission −'+inr(e.commission)+' · <b>Net earnings '+inr(e.net)+'</b></span></div>'; }
+
+/* ---------- admin dispatch ---------- */
+var DISPATCH_SEED=[
+ {id:"d1",customer:"Aarav M.",problem:"battery",problemLabel:"Battery dead",vehicle:"Car",city:"Hyderabad",area:"Banjara Hills",mechId:"m5",mechName:"City Battery House",price:599,slotDate:null,slotTime:"10:00–12:00",status:"Mechanic assigned",paid:true},
+ {id:"d2",customer:"Ishita R.",problem:"engine",problemLabel:"Engine trouble",vehicle:"Car",city:"Delhi",area:"Rohini",mechId:"m31",mechName:"NorthStar Motors",price:1199,slotDate:null,slotTime:"12:00–14:00",status:"Scheduled",paid:true},
+ {id:"d3",customer:"Rohan D.",problem:"flat-tyre",problemLabel:"Flat tyre",vehicle:"Bike",city:"Pune",area:"Kothrud",mechId:"m39",mechName:"Deccan Tyre House",price:299,slotDate:null,slotTime:"08:00–10:00",status:"On the way",paid:true},
+ {id:"d4",customer:"Meera K.",problem:"general",problemLabel:"General check",vehicle:"Car",city:"Chennai",area:"Anna Nagar",mechId:"m42",mechName:"Anna Nagar Auto Care",price:499,slotDate:null,slotTime:"16:00–18:00",status:"Scheduled",paid:false}
+];
+function loadDispatch(){ var d=loadJSON(DISPATCH_KEY,null); if(!d||!d.overrides) d={overrides:{}}; return d; }
+function adminRows(){ var ov=loadDispatch().overrides; var rows=[];
+  DISPATCH_SEED.forEach(function(r){ var c={}; for(var k in r) c[k]=r[k]; var o=ov[r.id]; if(o){ if(o.mechId){ c.mechId=o.mechId; var mm=findMech(o.mechId); c.mechName=mm?mm.name:o.mechId; } if(o.status) c.status=o.status; } if(!c.slotDate) c.slotDate=fmtDateStr(new Date()); c.real=false; rows.push(c); });
+  state.bookings.forEach(function(b){ rows.push({id:b.id,customer:b.name||b.userName||"Guest",problem:b.problem,problemLabel:b.problemLabel,vehicle:b.vehicle,city:b.city,area:b.area,mechId:b.mechId,mechName:b.mechName,price:b.price,slotDate:b.slotDate||null,slotTime:b.slotTime||null,status:b.cancelled?"Cancelled":getDisplayStatus(b),paid:!!b.paid,real:true}); });
+  return rows; }
+function adminReassign(id,mechId){ var m=findMech(mechId); if(!m) return false;
+  for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(b.id===id){ b.mechId=m.id; b.mechName=m.name;
+    if(b.declined){ b.declined=false; b.needsReassign=false; if(b.v2){ b.status="Scheduled"; b.managed=false; b.statusAt=Date.now(); } }
+    save(); return true; } }
+  var d=loadDispatch(); d.overrides[id]=d.overrides[id]||{}; d.overrides[id].mechId=mechId; saveJSON(DISPATCH_KEY,d); return true; }
+function adminSetStatus(id,status){ for(var i=0;i<state.bookings.length;i++){ var b=state.bookings[i]; if(b.id===id){
+    if(status==="Cancelled"){ b.cancelled=true; if(b.v2) b.status="Cancelled"; }
+    else { b.cancelled=false; if(!b.v2){ b.v2=true; } b.status=status; b.managed=true; b.statusAt=Date.now(); }
+    save(); return true; } }
+  var d=loadDispatch(); d.overrides[id]=d.overrides[id]||{}; d.overrides[id].status=status; saveJSON(DISPATCH_KEY,d); return true; }
+function renderAdmin(){ var tb=$("#adminTableBody"); if(!tb) return; var mechs=allMechanics();
+  var opts=function(cur){ return mechs.map(function(m){ return '<option value="'+m.id+'"'+(m.id===cur?" selected":"")+'>'+esc(m.name)+'</option>'; }).join(""); };
+  var sopts=function(cur){ return V2_STEPS.concat(["Cancelled"]).map(function(s){ return '<option'+(s===cur?" selected":"")+'>'+s+'</option>'; }).join(""); };
+  tb.innerHTML=adminRows().map(function(r){ return '<tr><td class="mono" style="font-size:11px">'+esc(r.id)+'</td><td>'+esc(r.customer)+'</td><td>'+esc(r.problemLabel||r.problem||"")+'</td><td>'+esc(r.slotDate?fmtDateLabel(r.slotDate):"—")+' '+esc(r.slotTime||"")+'</td>'
+    +'<td><select data-admin-mech="'+r.id+'">'+opts(r.mechId)+'</select></td>'
+    +'<td><select data-admin-status="'+r.id+'">'+sopts(r.status)+'</select></td>'
+    +'<td>'+(r.paid?"Paid":"Pay later")+'</td><td><b>'+inr(r.price)+'</b></td></tr>'; }).join("");
+  renderJoinQueue(); renderPriceEditor(); }
+function loadJoins(){ var j=loadJSON(JOIN_KEY,null); if(!j||!Array.isArray(j.requests)){ j={requests:[]}; saveJSON(JOIN_KEY,j); } return j; }
+function recordJoinRequest(m,status){ var j=loadJoins(); for(var i=0;i<j.requests.length;i++) if(j.requests[i].mechId===m.id) return j.requests[i];
+  var r={id:"j"+Date.now().toString(36)+Math.floor(Math.random()*99),mechId:m.id,name:m.name,city:m.city,area:m.area,kind:m.kind,status:status||"pending"};
+  j.requests.unshift(r); saveJSON(JOIN_KEY,j); return r; }
+function approveJoin(reqId){ var j=loadJoins(); for(var i=0;i<j.requests.length;i++) if(j.requests[i].id===reqId){ j.requests[i].status="approved"; saveJSON(JOIN_KEY,j); return true; } return false; }
+function rejectJoin(reqId){ var j=loadJoins(); for(var i=0;i<j.requests.length;i++) if(j.requests[i].id===reqId){ var mid=j.requests[i].mechId; j.requests[i].status="rejected"; saveJSON(JOIN_KEY,j);
+    state.custom=state.custom.filter(function(m){ return m.id!==mid; }); save(); return true; } return false; }
+function renderJoinQueue(){ var box=$("#joinQueue"); if(!box) return; var j=loadJoins();
+  if(!j.requests.length){ box.innerHTML='<p style="color:var(--muted);font-size:14.5px">No join requests yet — submissions from the “Join as a mechanic” form land here for approval.</p>'; return; }
+  box.innerHTML=j.requests.map(function(r){ return '<div class="job-card"><b>'+esc(r.name)+'</b> · '+esc(r.kind||"")+' · '+esc(r.area)+', '+esc(r.city)+' — <b>'+esc(r.status)+'</b>'
+   +(r.status==="pending"?'<div style="margin-top:10px"><button class="btn primary" data-japprove="'+r.id+'" style="margin-left:0;padding:10px 16px">Approve</button> <button class="btn danger" data-jreject="'+r.id+'" style="padding:10px 16px">Reject</button></div>':"")
+   +'</div>'; }).join(""); }
+function setPriceOverride(problem,vehicle,tier,value){ var s=loadJSON(PRICE_KEY,null); if(!s||!s.overrides) s={overrides:{}};
+  s.overrides[problem+"|"+vehicle+"|"+tier]=Number(value); saveJSON(PRICE_KEY,s); }
+function clearPriceOverrides(){ saveJSON(PRICE_KEY,{overrides:{}}); }
+function renderPriceEditor(){ var pe=$("#peProblem"); if(!pe) return;
+  if(!pe.options.length){ pe.innerHTML=PROBLEMS.map(function(p){ return '<option value="'+p.id+'">'+esc(p.label)+'</option>'; }).join(""); }
+  var prob=pe.value||"general", veh=$("#peVehicle").value, tier=parseInt($("#peTier").value,10);
+  var cur=priceFor({tier:tier},prob,veh); var base=(PRICES[prob]||PRICES.general)[tier];
+  var has=priceOverrides()[prob+"|"+veh+"|"+tier]!=null;
+  $("#peCurrent").textContent="Current charge for "+(PROBLEM_LABEL[prob]||prob)+" · "+veh+" · tier "+tier+": "+inr(cur)+(has?" (override active; base "+inr(base)+")":" (base table)");
+  if(document.activeElement!==$("#pePrice")) $("#pePrice").value=cur; }
+
+/* ---------- roles ---------- */
+function setRole(r,skipScroll){ try{ localStorage.setItem(ROLE_KEY,r); }catch(e){}
+  ["Customer","Mechanic","Admin"].forEach(function(n){ var b=$("#role"+n); if(b) b.classList.toggle("on",n.toLowerCase()===r); });
+  var p=$("#partner"), a=$("#admin");
+  if(p) p.style.display=(r==="mechanic")?"block":"none";
+  if(a) a.style.display=(r==="admin")?"block":"none";
+  if(r==="mechanic"){ renderPartner(); if(!skipScroll) p.scrollIntoView({behavior:"smooth"}); }
+  if(r==="admin"){ renderAdmin(); if(!skipScroll) a.scrollIntoView({behavior:"smooth"}); }
+  if(r==="customer"&&!skipScroll) document.getElementById("results").scrollIntoView({behavior:"smooth"}); }
+
+/* ---------- v2 wiring ---------- */
+function refreshAll(){ lastBookingKey=""; renderResults(); renderBookings(); renderGarage(); var p=$("#partner"); if(p&&p.style.display!=="none") renderPartner(); var a=$("#admin"); if(a&&a.style.display!=="none") renderAdmin(); }
+(function initV2(){ if(typeof document==="undefined"||!document.getElementById||!document.getElementById("partnerSel")) return;
+  loadAuth(); loadGarage(); loadPartner(); loadJoins();
+  /* record join requests for every mechanic added via the (existing) join flow */
+  var origAddMechanic=addMechanic;
+  addMechanic=function(data){ var m=origAddMechanic(data); try{ recordJoinRequest(m,"pending"); }catch(e){} return m; };
+  $("#roleCustomer").addEventListener("click",function(){ setRole("customer"); });
+  $("#roleMechanic").addEventListener("click",function(){ setRole("mechanic"); });
+  $("#roleAdmin").addEventListener("click",function(){ setRole("admin"); });
+  $("#authBtn").addEventListener("click",function(){ if(currentUser()){ doLogout(); updateAuthUI(); refreshAll(); toast("Logged out."); } else openAuth(); });
+  $("#partnerSel").addEventListener("change",function(){ var p=loadPartner(); p.selected=this.value; savePartner(p); renderPartner(); });
+  $("#availToggle").addEventListener("change",function(){ setAvailability(selectedPartnerId(),this.checked); renderPartner(); renderResults(); toast(this.checked?"You are available — visible in the finder.":"You are unavailable — hidden from “available now”."); });
+  $("#tabJobs").addEventListener("click",function(){ $("#jobsPane").style.display="block"; $("#earnPane").style.display="none"; });
+  $("#tabEarnings").addEventListener("click",function(){ $("#jobsPane").style.display="none"; $("#earnPane").style.display="block"; renderEarnings(); });
+  ["peProblem","peVehicle","peTier"].forEach(function(id){ $("#"+id).addEventListener("change",renderPriceEditor); });
+  $("#peSave").addEventListener("click",function(){ var v=parseInt($("#pePrice").value,10); if(isNaN(v)||v<0){ toast("Enter a valid price."); return; }
+    setPriceOverride($("#peProblem").value,$("#peVehicle").value,parseInt($("#peTier").value,10),v);
+    renderPriceEditor(); renderResults(); toast("Price updated — finder cards and booking summaries now use "+inr(v)+"."); });
+  $("#peReset").addEventListener("click",function(){ clearPriceOverrides(); renderPriceEditor(); renderResults(); toast("Price overrides cleared — base table restored."); });
+  document.addEventListener("change",function(e){ var t=e.target;
+    if(t.hasAttribute&&t.hasAttribute("data-admin-mech")){ if(adminReassign(t.getAttribute("data-admin-mech"),t.value)){ refreshAll(); toast("Mechanic reassigned."); } }
+    if(t.hasAttribute&&t.hasAttribute("data-admin-status")){ if(adminSetStatus(t.getAttribute("data-admin-status"),t.value)){ refreshAll(); toast("Status updated."); } } });
+  document.addEventListener("click",function(e){ var t=e.target.closest("[data-act2],[data-paccept],[data-pdecline],[data-pway],[data-pservice],[data-pcomplete],[data-offer-accept],[data-offer-decline],[data-offer-complete],[data-japprove],[data-jreject],[data-gdel],[data-rate-star],[data-rate-submit]"); if(!t) return;
+    if(t.hasAttribute("data-act2")&&t.getAttribute("data-act2")==="resched"){ openReschedule(t.getAttribute("data-id")); return; }
+    if(t.hasAttribute("data-gdel")){ deleteVehicle(t.getAttribute("data-gdel")); renderGarage(); toast("Vehicle removed."); return; }
+    if(t.hasAttribute("data-paccept")){ partnerAcceptBooking(t.getAttribute("data-paccept")); refreshAll(); toast("Job accepted — the customer sees “Mechanic assigned”."); return; }
+    if(t.hasAttribute("data-pdecline")){ partnerDeclineBooking(t.getAttribute("data-pdecline")); refreshAll(); toast("Declined — flagged for admin reassignment."); return; }
+    if(t.hasAttribute("data-pway")){ partnerSetStatus(t.getAttribute("data-pway"),"On the way"); refreshAll(); return; }
+    if(t.hasAttribute("data-pservice")){ partnerSetStatus(t.getAttribute("data-pservice"),"In service"); refreshAll(); return; }
+    if(t.hasAttribute("data-pcomplete")){ partnerCompleteBooking(t.getAttribute("data-pcomplete")); refreshAll(); toast("Job complete — earnings updated."); return; }
+    if(t.hasAttribute("data-offer-accept")){ offerAccept(selectedPartnerId(),t.getAttribute("data-offer-accept")); renderPartner(); return; }
+    if(t.hasAttribute("data-offer-decline")){ offerDecline(selectedPartnerId(),t.getAttribute("data-offer-decline")); renderPartner(); return; }
+    if(t.hasAttribute("data-offer-complete")){ offerComplete(selectedPartnerId(),t.getAttribute("data-offer-complete")); renderPartner(); toast("Offer job complete — earnings updated."); return; }
+    if(t.hasAttribute("data-japprove")){ approveJoin(t.getAttribute("data-japprove")); renderAdmin(); toast("Partner approved — on the roster."); return; }
+    if(t.hasAttribute("data-jreject")){ rejectJoin(t.getAttribute("data-jreject")); refreshAll(); toast("Join request rejected — listing removed."); return; }
+    if(t.hasAttribute("data-rate-star")){ var bid=t.getAttribute("data-rate-star"); var wrap=document.getElementById("rate-"+bid);
+      if(wrap){ wrap.setAttribute("data-stars",t.getAttribute("data-v")); wrap.querySelectorAll("[data-rate-star]").forEach(function(s){ s.classList.toggle("on",parseInt(s.getAttribute("data-v"),10)<=parseInt(t.getAttribute("data-v"),10)); }); } return; }
+    if(t.hasAttribute("data-rate-submit")){ var bid2=t.getAttribute("data-rate-submit"); var wrap2=document.getElementById("rate-"+bid2);
+      var sv=wrap2?parseInt(wrap2.getAttribute("data-stars")||"5",10):5;
+      var tx=wrap2?wrap2.querySelector("[data-rate-text]").value:"";
+      if(rateBooking(bid2,sv,tx)){ refreshAll(); toast("Thanks — rating saved."); } return; }
+  });
+  var savedRole="customer"; try{ savedRole=localStorage.getItem(ROLE_KEY)||"customer"; }catch(e){}
+  updateAuthUI(); setRole(savedRole,true); refreshAll();
+  setInterval(function(){ if(autoAdvanceV2()){ lastBookingKey=""; renderBookings(); } },4000);
+})();
+
 </script>
 </body>
 </html>
