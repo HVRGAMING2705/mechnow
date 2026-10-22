@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en" class="fx">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MechNow — Roadside Mechanic Near You | Verified Mechanics, Upfront Prices</title>
+<meta name="description" content="Vehicle broke down? MechNow finds verified local mechanics near you — garages, tyre shops, battery specialists and mobile mechanics — with upfront charges and live ETA. Book in two taps.">
+<link rel="canonical" href="https://mechnow.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MechNow">
+<meta property="og:title" content="MechNow — Roadside Mechanic Near You">
+<meta property="og:description" content="Verified mechanics near you with upfront charges and ETA. Bike, car and EV specialists. Book in two taps.">
+<meta property="og:url" content="https://mechnow.vercel.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MechNow — Roadside Mechanic Near You">
+<meta name="twitter:description" content="Verified mechanics near you with upfront charges and ETA. Bike, car and EV specialists.">
+<meta name="theme-color" content="#0c0a09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c0a09'/%3E%3Cpath d='M35 6 L16 36 h12 L26 58 L48 26 H35 Z' fill='%23f59e0b'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"MechNow","url":"https://mechnow.vercel.app/","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","description":"Roadside mechanic marketplace: find verified local mechanics near you with upfront charges and ETA, and book in two taps.","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"},"areaServed":["Hyderabad","Bengaluru","Mumbai","Delhi","Pune","Chennai"]}
+</script>
+<style>
+/* ============ MechNow tokens (design system §1, amber adaptation) ============ */
+:root{
+  --paper:#0c0a09; --ink:#f5f0e8; --soft:#171310; --soft-2:#1f1a15;
+  --muted:#a89f92; --line:rgba(255,255,255,.13); --card:#15110d;
+  --signal:#f59e0b; --signal-2:#38bdf8; --on-signal:#1c1002;
+  --dark:#080605; --dark-2:#100d0a;
+  --shadow:0 30px 90px rgba(0,0,0,.45);
+  --card-shadow:0 1px 2px rgba(0,0,0,.35),0 20px 44px -24px rgba(0,0,0,.55);
+  --header-bg:rgba(8,6,5,.74);
+  --danger:#f87171; --ok:#4ade80;
+  --font-display:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,"Roboto Mono",monospace;
+  --ease:cubic-bezier(.2,.75,.15,1);
+}
+html[data-theme="light"]{
+  --paper:#f6f3ec; --ink:#171310; --soft:#fffdf8; --soft-2:#efe9dd;
+  --muted:#6f6455; --line:rgba(23,19,16,.14); --card:#fffdf8;
+  --dark:#14100b; --dark-2:#1d1712;
+  --shadow:0 30px 90px rgba(60,40,0,.18);
+  --card-shadow:0 1px 2px rgba(0,0,0,.05),0 20px 44px -24px rgba(0,0,0,.22);
+  --header-bg:rgba(246,243,236,.8);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--signal);color:var(--on-signal)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--signal),#b45309);border-radius:6px;border:2px solid var(--paper)}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+select,input,textarea{font-family:inherit}
+.grain{position:fixed;inset:0;z-index:2000;pointer-events:none;opacity:.04;mix-blend-mode:screen;background:repeating-radial-gradient(circle at 30% 40%,#fff 0 .6px,transparent .6px 4px)}
+#progressBar{position:fixed;top:0;left:0;height:2px;width:100%;z-index:1500;background:linear-gradient(90deg,var(--signal),var(--signal-2));transform-origin:0 50%;transform:scaleX(0)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--signal);color:var(--on-signal);padding:10px 18px;font-family:var(--font-mono);font-size:12px;z-index:3000;border-radius:0 0 10px 0}
+.skip:focus{left:0}
+.wrap{width:min(1240px,calc(100% - 56px));margin:0 auto}
+.kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal);display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:34px;height:1px;background:var(--signal)}
+.mono{font-family:var(--font-mono)}
+/* ============ Header ============ */
+header.site{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--header-bg);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
+.hd-in{display:flex;align-items:center;gap:26px;height:70px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:-.03em}
+.logo .bolt{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--signal),#b45309);display:grid;place-items:center;flex:none}
+.logo em{font-style:normal;color:var(--signal)}
+nav.main{display:flex;gap:24px;margin-left:auto}
+nav.main a{text-decoration:none;font-size:14px;font-weight:600;color:var(--muted);position:relative;padding:4px 0}
+nav.main a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--signal);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease)}
+nav.main a:hover{color:var(--ink)}
+nav.main a:hover::after{transform:scaleX(1)}
+.theme-btn{margin-left:6px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);display:grid;place-items:center;transition:transform .3s var(--ease),background .3s}
+.theme-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+html[data-theme="light"] .theme-btn{background:rgba(0,0,0,.04)}
+/* ============ Hero ============ */
+.hero{position:relative;background:linear-gradient(150deg,#080605 20%,#171008 58%,#0a0705);color:#f5f0e8;overflow:hidden;padding:158px 0 84px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 74% 16%,rgba(56,189,248,.13),transparent 32%),radial-gradient(circle at 26% 80%,rgba(245,158,11,.22),transparent 30%),linear-gradient(150deg,#080605 20%,#171008 58%,#0a0705);background-size:125% 125%,135% 135%,100% 100%;animation:meshDrift 15s ease-in-out infinite alternate}
+@keyframes meshDrift{0%{background-position:66% 14%,28% 78%,0 0}100%{background-position:79% 26%,18% 62%,0 0}}
+.hero .wrap{position:relative;z-index:2}
+.hero .kicker{color:var(--signal)}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 16px var(--signal);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
+.hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(46px,7.4vw,96px);line-height:.98;letter-spacing:-.03em;text-transform:uppercase;margin:18px 0 8px}
+.hero h1 .outl{color:transparent;-webkit-text-stroke:1.5px rgba(245,240,232,.85)}
+.hero .sub{max-width:560px;color:#c9c0b2;font-size:17px;margin:14px 0 30px}
+.hero .sub b{color:#f5f0e8}
+/* emergency panel */
+.panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:20px;padding:26px;box-shadow:var(--shadow)}
+.panel h2{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c9c0b2;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#f5f0e8;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;transition:all .25s var(--ease)}
+.chip:hover{transform:translateY(-2px);border-color:var(--signal)}
+.chip.on{background:var(--signal);color:var(--on-signal);border-color:var(--signal)}
+.panel-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:18px;margin-top:22px}
+.field label{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c9c0b2;margin-bottom:8px}
+.seg{display:flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;color:#c9c0b2;border-radius:9px;padding:10px;font-weight:700;font-size:14px;transition:all .25s var(--ease)}
+.seg button.on{background:var(--signal);color:var(--on-signal)}
+.field select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#f5f0e8;border-radius:12px;padding:12px;font-size:15px;font-weight:600;appearance:none}
+.field select option{color:#171310}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;align-items:center}
+.filters .flabel{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c9c0b2;margin-right:2px}
+.fchip{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#f5f0e8;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;transition:all .25s var(--ease)}
+.fchip .dot{width:7px;height:7px;border-radius:50%;background:#5c554a}
+.fchip.on{background:#f5f0e8;color:#171310;border-color:#f5f0e8}
+.fchip.on .dot{background:var(--signal)}
+.find-btn{margin-top:24px;width:100%;position:relative;overflow:hidden;border:0;border-radius:14px;background:linear-gradient(120deg,var(--signal),#d97706);color:var(--on-signal);font-family:var(--font-display);font-weight:900;font-size:19px;letter-spacing:.01em;padding:18px;text-transform:uppercase;transition:transform .2s var(--ease)}
+.find-btn:hover{transform:translateY(-2px)}
+.find-btn::after{content:"";position:absolute;top:0;bottom:0;width:60%;left:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:translateX(-140%)}
+.find-btn:hover::after{transform:translateX(240%);transition:transform .7s var(--ease)}
+.hero-note{margin-top:14px;font-family:var(--font-mono);font-size:11px;color:#8f8577;letter-spacing:.04em;text-align:center}
+/* marquee */
+.marquee{background:var(--signal);color:var(--on-signal);overflow:hidden;padding:10px 0;border-block:1px solid rgba(0,0,0,.2)}
+.marquee-track{display:flex;width:max-content;animation:marq 30s linear infinite;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.marquee-track span{padding:0 14px;white-space:nowrap}
+@keyframes marq{to{transform:translateX(-50%)}}
+/* ============ Sections ============ */
+section.block{padding:96px 0}
+section.block + section.block{border-top:1px solid var(--line)}
+.sec-h{font-family:var(--font-display);font-weight:900;font-size:clamp(32px,4.6vw,56px);letter-spacing:-.025em;line-height:1.02;margin:14px 0 10px}
+.sec-sub{color:var(--muted);max-width:620px;font-size:16px}
+/* results */
+.results-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin:26px 0 20px}
+.results-meta .count{font-family:var(--font-display);font-weight:900;font-size:26px;letter-spacing:-.02em}
+.results-meta .ctx{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.mcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--card-shadow);transition:transform .45s var(--ease),box-shadow .45s var(--ease);display:flex;flex-direction:column;gap:12px}
+.mcard:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.mcard.newflash{animation:flash 1.6s var(--ease)}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--signal)}100%{box-shadow:var(--card-shadow)}}
+.mc-top{display:flex;gap:13px;align-items:flex-start}
+.avatar{width:52px;height:52px;flex:none;border-radius:14px;background:linear-gradient(140deg,var(--soft-2),var(--dark-2));border:1px solid var(--line);display:grid;place-items:center;color:var(--signal)}
+.mc-name{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-.015em;line-height:1.15;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.vbadge{color:var(--signal-2);flex:none}
+.mc-kind{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:600;background:var(--soft-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted)}
+.tag.ev{color:#166534;background:#dcfce7;border-color:#bbf7d0}
+html[data-theme="dark"] .tag.ev{color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.3)}
+.stats{display:flex;gap:16px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+.stars{color:var(--signal);letter-spacing:1px;font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 11px;border:1px solid var(--line)}
+.pill.open{color:#166534;background:#dcfce7;border-color:#bbf7d0}
+html[data-theme="dark"] .pill.open{color:#86efac;background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.3)}
+.pill.closed{color:#991b1b;background:#fee2e2;border-color:#fecaca}
+html[data-theme="dark"] .pill.closed{color:#fca5a5;background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3)}
+.pill.newb{color:var(--on-signal);background:var(--signal);border-color:var(--signal);font-weight:700}
+.mc-foot{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line)}
+.price{font-family:var(--font-display);font-weight:900;font-size:21px;letter-spacing:-.02em}
+.price small{display:block;font-family:var(--font-mono);font-weight:400;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn{border-radius:12px;padding:12px 18px;font-weight:700;font-size:14.5px;border:1px solid var(--line);background:transparent;color:var(--ink);transition:all .25s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:var(--on-signal);margin-left:auto;position:relative;overflow:hidden}
+.btn.primary:hover{background:#fbbf24}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.empty{border:1.5px dashed var(--line);border-radius:18px;padding:44px 26px;text-align:center;color:var(--muted)}
+.empty b{color:var(--ink);display:block;font-size:17px;margin-bottom:5px}
+/* bookings */
+.bcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--card-shadow);margin-bottom:18px}
+.bcard-top{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.bcard-top .bn{font-family:var(--font-display);font-weight:800;font-size:19px;letter-spacing:-.015em}
+.bcard-top .bm{color:var(--muted);font-size:13.5px}
+.bcard-top .bp{margin-left:auto;font-family:var(--font-display);font-weight:900;font-size:19px}
+.timeline{display:flex;margin:22px 0 6px;position:relative}
+.tstep{flex:1;text-align:center;position:relative;padding-top:20px;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tstep::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;background:var(--soft-2);border:2px solid var(--line);z-index:2}
+.tstep::after{content:"";position:absolute;top:10px;left:calc(-50% + 8px);right:calc(50% + 8px);height:2px;background:var(--line)}
+.tstep:first-child::after{display:none}
+.tstep.done{color:var(--ink)}
+.tstep.done::before{background:var(--signal);border-color:var(--signal);box-shadow:0 0 10px rgba(245,158,11,.5)}
+.tstep.done::after{background:var(--signal)}
+.tstep.now::before{animation:pulse 1.6s infinite}
+.demo-note{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.03em}
+/* trust + business */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:34px}
+.tile{background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:24px;transition:transform .45s var(--ease)}
+.tile:hover{transform:translateY(-4px)}
+.tile .ic{width:44px;height:44px;border-radius:12px;background:rgba(245,158,11,.13);color:var(--signal);display:grid;place-items:center;margin-bottom:14px}
+.tile h3{font-family:var(--font-display);font-weight:800;font-size:17px;letter-spacing:-.015em;margin-bottom:6px}
+.tile p{color:var(--muted);font-size:14.5px}
+.band{background:linear-gradient(150deg,#080605,#171008 60%,#0a0705);color:#f5f0e8;border-radius:24px;padding:44px;position:relative;overflow:hidden}
+.band::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 10%,rgba(245,158,11,.2),transparent 34%),radial-gradient(circle at 12% 92%,rgba(56,189,248,.1),transparent 30%)}
+.band > *{position:relative;z-index:1}
+.band h3{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.02em;line-height:1.05}
+.band p{color:#c9c0b2;max-width:560px;margin-top:10px}
+.comm{display:inline-flex;gap:10px;align-items:center;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.4);color:#fcd34d;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;margin-top:18px}
+/* join form */
+.form-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;box-shadow:var(--card-shadow);margin-top:30px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fgrid .full{grid-column:1/-1}
+.inp,textarea.inp{width:100%;background:var(--soft);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:15px}
+.inp.err{border-color:var(--danger);box-shadow:0 0 0 3px rgba(248,113,113,.18)}
+label.fl{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
+.checks{display:flex;flex-wrap:wrap;gap:14px;margin-top:4px}
+.checks label{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600;cursor:pointer}
+.checks input{accent-color:var(--signal);width:17px;height:17px}
+.tagchecks{display:flex;flex-wrap:wrap;gap:8px}
+.tagchecks label{border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
+.tagchecks input{display:none}
+.tagchecks label:has(input:checked){background:var(--signal);color:var(--on-signal);border-color:var(--signal)}
+/* FAQ */
+.faq{margin-top:30px;display:grid;gap:12px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 22px}
+.faq summary{font-family:var(--font-display);font-weight:700;font-size:16.5px;padding:15px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .plus{font-size:22px;color:var(--signal);transition:transform .3s var(--ease);flex:none}
+.faq details[open ] summary .plus{transform:rotate(45deg)}
+.faq details p{color:var(--muted);padding:0 0 17px;font-size:15px;max-width:720px}
+/* footer */
+footer.site{background:var(--dark);color:#c9c0b2;padding:64px 0 34px;margin-top:0}
+footer.site .flogo{font-family:var(--font-display);font-weight:900;font-size:26px;color:#f5f0e8;letter-spacing:-.03em}
+footer.site .flogo em{font-style:normal;color:var(--signal)}
+footer.site a{color:#c9c0b2;text-decoration:none}
+footer.site a:hover{color:var(--signal)}
+.fcols{display:flex;flex-wrap:wrap;gap:38px;margin-top:22px}
+.fcols h4{font-family:var(--font-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#8f8577;margin-bottom:12px}
+.fcols li{list-style:none;margin-bottom:8px;font-size:14px}
+.fbot{border-top:1px solid rgba(255,255,255,.12);margin-top:38px;padding-top:20px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:#8f8577}
+/* modal */
+.mback{position:fixed;inset:0;background:rgba(4,3,2,.66);backdrop-filter:blur(6px);z-index:1600;display:none;align-items:flex-end;justify-content:center;padding:0}
+.mback.open{display:flex}
+.modal{background:var(--card);color:var(--ink);width:min(620px,100%);max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:30px;box-shadow:var(--shadow);animation:mup .45s var(--ease)}
+@media(min-width:700px){.mback{align-items:center;padding:22px}.modal{border-radius:22px}}
+@keyframes mup{from{transform:translateY(36px);opacity:0}}
+.modal .x{float:right;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:17px}
+.modal h3{font-family:var(--font-display);font-weight:900;font-size:25px;letter-spacing:-.02em;line-height:1.1;padding-right:44px}
+.svc{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.svc b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.review{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:10px;font-size:14.5px}
+.review .rn{font-weight:700;font-size:13px;margin-top:7px;color:var(--muted)}
+/* toast + backtop */
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,90px);background:#171310;color:#f5f0e8;border:1px solid rgba(245,158,11,.5);padding:13px 22px;border-radius:999px;font-weight:600;font-size:14.5px;z-index:2500;transition:transform .5s var(--ease);box-shadow:var(--shadow);max-width:calc(100% - 40px);text-align:center}
+#toast.show{transform:translate(-50%,0)}
+#backTop{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;border:0;background:linear-gradient(140deg,var(--signal),#b45309);color:var(--on-signal);font-size:19px;z-index:900;opacity:0;pointer-events:none;transition:all .4s var(--ease);box-shadow:var(--card-shadow)}
+#backTop.show{opacity:1;pointer-events:auto}
+#backTop:hover{transform:translateY(-3px)}
+/* reveal */
+html.fx .rv{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .9s var(--ease)}
+html.fx .rv.visible{opacity:1;transform:none}
+/* print */
+@media print{header.site,#progressBar,#backTop,#toast,.grain,.marquee,.find-btn{display:none!important}body{background:#fff;color:#000}section.block{padding:22px 0}}
+/* responsive */
+@media(max-width:900px){nav.main{display:none}.panel-grid{grid-template-columns:1fr 1fr}.hero{padding-top:128px}}
+@media(max-width:620px){.wrap{width:calc(100% - 30px)}.hd-in{height:60px}.panel-grid{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr}.band{padding:30px 22px}.hero h1{font-size:44px}section.block{padding:64px 0}.tstep{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.marquee-track{animation:none}html.fx .rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#results">Skip to mechanics</a>
+<div id="progressBar"></div>
+<div class="grain"></div>
+
+<header class="site">
+  <div class="wrap hd-in">
+    <a class="logo" href="#top" aria-label="MechNow home">
+      <span class="bolt"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M13 2 4.5 14.5H11L9.8 22 19 9.5h-6.5L13 2Z" fill="#1c1002"/></svg></span>
+      Mech<em>Now</em>
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="#results">Find a mechanic</a>
+      <a href="#bookings">My bookings</a>
+      <a href="#trust">Why MechNow</a>
+      <a href="#join">For mechanics</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+      <svg id="themeIconSun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg>
+      <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M20.6 14.2A8.8 8.8 0 1 1 9.8 3.4a7.2 7.2 0 0 0 10.8 10.8Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker"><span class="pulse-dot"></span> Roadside help · Verified local mechanics</p>
+    <h1>Vehicle<br>broke <span class="outl">down?</span></h1>
+    <p class="sub">Don't push it. Tell MechNow what's wrong and see <b>verified mechanics near you</b> — garages, tyre shops, battery specialists and mobile mechanics — with <b>upfront charges and ETA</b>. Book in two taps.</p>
+
+    <div class="panel" id="finder">
+      <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.2 4.2 0 0 1 5.6-4L17.5 5l1.5 1.5 3.3-2.8a4.2 4.2 0 0 1-5.4 5.6L8 18.2A2.1 2.1 0 0 1 5 15.2l8.9-8.9Z" transform="scale(.94)"/></svg> What's the problem?</h2>
+      <div class="chips" id="problemChips" role="radiogroup" aria-label="Problem"></div>
+      <div class="panel-grid">
+        <div class="field">
+          <label id="vehLabel">Vehicle</label>
+          <div class="seg" role="group" aria-labelledby="vehLabel">
+            <button type="button" id="vehBike" class="on">Bike</button>
+            <button type="button" id="vehCar">Car</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="citySel">City</label>
+          <select id="citySel"></select>
+        </div>
+        <div class="field">
+          <label for="areaSel">Your area</label>
+          <select id="areaSel"></select>
+        </div>
+      </div>
+      <div class="filters" aria-label="Filters">
+        <span class="flabel">Show only</span>
+        <button type="button" class="fchip" id="fOpen"><span class="dot"></span>Open now</button>
+        <button type="button" class="fchip" id="fMobile"><span class="dot"></span>Mobile mechanic</button>
+        <button type="button" class="fchip" id="fEV"><span class="dot"></span>EV specialist</button>
+        <button type="button" class="fchip" id="fTop"><span class="dot"></span>Top rated 4.6+</button>
+      </div>
+      <button class="find-btn" id="findBtn" type="button">Find mechanics near me</button>
+      <p class="hero-note">NO SIGN-UP · NO ADVANCE PAYMENT · PAY THE MECHANIC AFTER THE JOB</p>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="marquee-track" id="marqueeTrack"></div></div>
+
+<!-- ================= RESULTS ================= -->
+<section class="block" id="results">
+  <div class="wrap">
+    <p class="kicker rv">Near you</p>
+    <h2 class="sec-h rv">Mechanics, ready to roll</h2>
+    <p class="sec-sub rv">Sorted by distance. Every price below is the fixed service charge for your selected problem — parts, if any, are extra at market rate and approved by you first.</p>
+    <div class="results-meta rv">
+      <span class="count" id="resCount">–</span>
+      <span class="ctx" id="resCtx"></span>
+    </div>
+    <div class="grid" id="resultsGrid"></div>
+    <div class="empty" id="resultsEmpty" style="display:none"><b>No mechanic matches those filters</b>Try removing a filter, or pick “All areas” — new partners join MechNow every week.</div>
+  </div>
+</section>
+
+<!-- ================= BOOKINGS ================= -->
+<section class="block" id="bookings">
+  <div class="wrap">
+    <p class="kicker rv">Your jobs</p>
+    <h2 class="sec-h rv">My bookings</h2>
+    <p class="sec-sub rv">Live status for every booking you've made. <span class="demo-note">DEMO MODE — STATUS ADVANCES ABOUT EVERY 20 SECONDS.</span></p>
+    <div id="bookingsList" style="margin-top:30px"></div>
+    <div class="empty" id="bookingsEmpty"><b>No bookings yet</b>When you book a mechanic above, live job tracking shows up here.</div>
+  </div>
+</section>
+
+<!-- ================= TRUST ================= -->
+<section class="block" id="trust">
+  <div class="wrap">
+    <p class="kicker rv">Why MechNow</p>
+    <h2 class="sec-h rv">Street mechanics,<br>minus the guesswork</h2>
+    <p class="sec-sub rv">MechNow digitises the mechanics already on your street — and wraps them in verification, fixed pricing and ratings, so a breakdown never turns into a negotiation.</p>
+    <div class="tiles">
+      <div class="tile rv"><div class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 5.8v5.4c0 4.3 2.9 7.4 7 9.3 4.1-1.9 7-5 7-9.3V5.8L12 3Z"/><path d="m9 11.6 2.2 2.2 4-4.2"/></svg></div><h3>Verified ID checks</h3><p>Every mechanic and garage is ID-verified before their first listing. The badge means a real person, checked by us.</p></div>
+      <div class="tile rv"><div class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h12M6 8h12M9 13c4.5 0 6.5 1.6 6.5 4 0 2.6-2.4 4-6 4l6.5-8M6 13h3"/></svg></div><h3>Upfront pricing</h3><p>The service charge is fixed before you book — no surprises at the roadside. Parts are extra only with your approval.</p></div>
+      <div class="tile rv"><div class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10.5h18M7 15.5h4"/></svg></div><h3>Pay after the job</h3><p>Nothing is charged in the app. You pay the mechanic directly — UPI, cash or card — only when the work is done.</p></div>
+      <div class="tile rv"><div class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.7 5.8 6.3.7-4.7 4.3 1.3 6.2L12 17l-5.6 3 1.3-6.2L3 9.5l6.3-.7L12 3Z"/></svg></div><h3>Ratings from real jobs</h3><p>Only customers who completed a booking can rate. Mechanics who slip get delisted — the badge has to be earned daily.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOR MECHANICS ================= -->
+<section class="block" id="join">
+  <div class="wrap">
+    <div class="band rv">
+      <p class="kicker" style="color:var(--signal)">For mechanics &amp; garages</p>
+      <h3>Your next customer is<br>broken down 2 km away</h3>
+      <p>Join MechNow and get breakdown jobs near your shop or your route — no marketing spend, no visiting-card hustle. You set your prices, you keep the customer relationship, and customers pay you directly.</p>
+      <span class="comm">10% platform commission — only on completed jobs · ₹0 joining fee</span>
+      <p style="font-family:var(--font-mono);font-size:10.5px;margin-top:14px;color:#8f8577">COMMISSION AND FIGURES ARE ILLUSTRATIVE IN THIS DEMO.</p>
+    </div>
+
+    <form class="form-card rv" id="joinForm" novalidate>
+      <p class="kicker">Join as a mechanic</p>
+      <h3 style="font-family:var(--font-display);font-weight:900;font-size:24px;letter-spacing:-.02em;margin:10px 0 20px">List your garage or mobile service</h3>
+      <div class="fgrid">
+        <div>
+          <label class="fl" for="jName">Garage / your name *</label>
+          <input class="inp" id="jName" type="text" placeholder="e.g. Sharma Auto Works" autocomplete="off">
+        </div>
+        <div>
+          <label class="fl" for="jKind">Type</label>
+          <select class="inp" id="jKind">
+            <option>Garage</option><option>Mobile mechanic</option><option>Tyre shop</option><option>Battery specialist</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl" for="jCity">City</label>
+          <select class="inp" id="jCity"></select>
+        </div>
+        <div>
+          <label class="fl" for="jArea">Area</label>
+          <select class="inp" id="jArea"></select>
+        </div>
+        <div class="full">
+          <label class="fl">Specialties</label>
+          <div class="tagchecks" id="jTags"></div>
+        </div>
+        <div class="full checks">
+          <label><input type="checkbox" id="jMobile"> I'm a mobile mechanic (I travel to the vehicle)</label>
+          <label><input type="checkbox" id="jEV"> EV trained (electric bikes / cars)</label>
+        </div>
+      </div>
+      <button class="btn primary" type="submit" id="jSubmit" style="margin-top:22px;padding:15px 30px;font-size:16px">List me on MechNow</button>
+      <p class="demo-note" style="margin-top:12px">LISTINGS APPEAR INSTANTLY WITH A “NEW PARTNER” BADGE. ID VERIFICATION FOLLOWS IN THE FULL PRODUCT.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="block" id="faq">
+  <div class="wrap">
+    <p class="kicker rv">Questions</p>
+    <h2 class="sec-h rv">Before you ask</h2>
+    <div class="faq rv">
+      <details><summary>How fast can a mechanic reach me?<span class="plus">+</span></summary><p>Every listing shows a live ETA. Mobile mechanics in city areas typically arrive in 20–45 minutes; garages show the ETA if they offer pickup or roadside visits. Pick the closest one and watch the status move in My Bookings.</p></details>
+      <details><summary>How does pricing work — will I be overcharged?<span class="plus">+</span></summary><p>No. The service charge for your problem is fixed and shown before you book. If a part is needed, the mechanic quotes the market price and fits it only after your approval. You pay the mechanic directly, after the job — MechNow never holds your money.</p></details>
+      <details><summary>Do you support electric bikes and EVs?<span class="plus">+</span></summary><p>Yes. Use the “EV specialist” filter to see mechanics trained on electric two-wheelers and EVs — controller, battery, BMS and charging faults included. High-voltage work is only assigned to EV-trained partners.</p></details>
+      <details><summary>How do I pay?<span class="plus">+</span></summary><p>Pay the mechanic after the job is done — UPI, cash or card, whatever they accept. There is no advance payment and no booking fee for customers in this demo.</p></details>
+      <details><summary>I'm a mechanic. How do I join, and what does it cost?<span class="plus">+</span></summary><p>Fill the “Join as a mechanic” form above — your listing goes live instantly with a New Partner badge. Joining is free; MechNow takes a 10% commission only on completed jobs (illustrative in this demo). ID verification completes your Verified badge.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site">
+  <div class="wrap">
+    <div class="flogo">Mech<em>Now</em></div>
+    <p style="max-width:520px;margin-top:10px;font-size:14.5px">The roadside-mechanic marketplace. Verified local mechanics, upfront charges, live ETA — for bikes, cars and EVs.</p>
+    <div class="fcols">
+      <div><h4>App</h4><ul>
+        <li><a href="#results">Find a mechanic</a></li>
+        <li><a href="#bookings">My bookings</a></li>
+        <li><a href="#join">Join as a mechanic</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul></div>
+      <div><h4>Legal</h4><ul>
+        <li><a href="legal.html#privacy">Privacy Policy</a></li>
+        <li><a href="legal.html#terms">Terms &amp; EULA</a></li>
+        <li><a href="legal.html#dmca">DMCA / Takedown</a></li>
+      </ul></div>
+      <div><h4>Cities</h4><ul>
+        <li>Hyderabad</li><li>Bengaluru</li><li>Mumbai</li><li>Delhi</li><li>Pune</li><li>Chennai</li>
+      </ul></div>
+    </div>
+    <div class="fbot">
+      <span>© 2026 MechNow — a demo project. Prices, ETAs and partners are illustrative.</span>
+      <span>Last updated · 22 Oct 2026</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MODALS ================= -->
+<div class="mback" id="mechBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Mechanic details">
+    <button class="x" data-close="mechBack" aria-label="Close">✕</button>
+    <div id="mechModalBody"></div>
+  </div>
+</div>
+<div class="mback" id="bookBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Confirm booking">
+    <button class="x" data-close="bookBack" aria-label="Close">✕</button>
+    <div id="bookModalBody"></div>
+  </div>
+</div>
+
+<button id="backTop" aria-label="Back to top">↑</button>
+<div id="toast" role="status"></div>
+<script>
+"use strict";
+/* ================= MechNow — data ================= */
+var PROBLEMS=[
+ {id:"wont-start",label:"Won't start"},
+ {id:"flat-tyre",label:"Flat tyre"},
+ {id:"battery",label:"Battery dead"},
+ {id:"engine",label:"Engine trouble"},
+ {id:"overheating",label:"Overheating"},
+ {id:"accident",label:"Accident help"},
+ {id:"general",label:"General check"}
+];
+/* fixed service charge per problem, by mechanic tier [budget, standard, premium] */
+var PRICES={"wont-start":[499,699,999],"flat-tyre":[299,399,549],"battery":[399,599,899],"engine":[799,1199,1799],"overheating":[599,899,1299],"accident":[999,1499,2499],"general":[349,499,749]};
+var PROBLEM_LABEL={}; PROBLEMS.forEach(function(p){PROBLEM_LABEL[p.id]=p.label;});
+var ALL_TAGS=["Engine","Battery","Tyres","EV / Electric","Brakes","General","AC","Towing"];
+var AREAS={
+ "Hyderabad":["Hitech City","Banjara Hills","Secunderabad","Kukatpally"],
+ "Bengaluru":["Indiranagar","Whitefield","Koramangala","Hebbal"],
+ "Mumbai":["Andheri West","Bandra","Powai","Thane"],
+ "Delhi":["Karol Bagh","Lajpat Nagar","Rohini","Dwarka"],
+ "Pune":["Koregaon Park","Hinjewadi","Kothrud","Wakad"],
+ "Chennai":["Anna Nagar","Velachery","T Nagar","Porur"]
+};
+var CITIES=Object.keys(AREAS);
+/* seed rows: [name, area, kind, tier, tags, distKm, etaMin, rating, reviews, mobile, ev, openH, closeH, visitCharge] */
+var SEED={
+"Hyderabad":[
+ ["Sri Sai Auto Garage","Hitech City","Garage",1,["Engine","General","Brakes"],1.8,35,4.7,412,false,false,9,21,199],
+ ["VoltFix EV Care","Hitech City","Garage",2,["EV / Electric","Battery"],2.4,40,4.8,268,false,true,9,22,299],
+ ["RoadRunner Mobile Mech","Hitech City","Mobile mechanic",1,["General","Battery","Tyres"],0.9,18,4.6,521,true,false,0,24,249],
+ ["TyreHub Point","Banjara Hills","Tyre shop",1,["Tyres","General"],1.2,25,4.5,389,false,false,9,22,149],
+ ["City Battery House","Banjara Hills","Battery specialist",1,["Battery","EV / Electric"],2.1,30,4.6,304,false,true,8,22,199],
+ ["Deccan Motors","Secunderabad","Garage",0,["Engine","General","AC"],1.5,30,4.3,655,false,false,9,20,149],
+ ["NightOwl Rescue Mech","Secunderabad","Mobile mechanic",2,["Towing","General","Engine"],1.1,15,4.9,847,true,false,0,24,349],
+ ["SparkPlug EV Works","Kukatpally","Garage",1,["EV / Electric","General"],2.8,45,4.7,193,false,true,9,21,199],
+ ["Kukatpally Tyre & Care","Kukatpally","Tyre shop",0,["Tyres","Brakes"],0.7,20,4.4,276,false,false,8,22,99]
+],
+"Bengaluru":[
+ ["GearUp Garage","Indiranagar","Garage",1,["Engine","Brakes","General"],1.4,30,4.6,433,false,false,9,21,199],
+ ["Ampere Alley EV Studio","Indiranagar","Garage",2,["EV / Electric","Battery"],2.2,35,4.8,241,false,true,10,21,299],
+ ["RapidFix Mobile","Whitefield","Mobile mechanic",1,["Battery","Tyres","General"],1.0,16,4.7,598,true,false,0,24,249],
+ ["Whitefield Auto Clinic","Whitefield","Garage",1,["Engine","AC","General"],2.6,40,4.5,367,false,false,9,21,199],
+ ["TyreTread Koramangala","Koramangala","Tyre shop",1,["Tyres"],0.8,20,4.6,312,false,false,9,22,149],
+ ["JuiceBox Battery Co","Koramangala","Battery specialist",0,["Battery"],1.6,25,4.4,289,false,false,8,21,149],
+ ["Hebbal Highway Motors","Hebbal","Garage",0,["Engine","Towing","General"],2.0,35,4.3,441,false,false,8,20,149],
+ ["MotoMedic OnCall","Hebbal","Mobile mechanic",2,["General","EV / Electric"],1.3,14,4.9,702,true,true,0,24,349]
+],
+"Mumbai":[
+ ["Western Auto Works","Andheri West","Garage",1,["Engine","AC","General"],1.7,35,4.5,388,false,false,9,21,249],
+ ["SeaLink Mobile Mech","Andheri West","Mobile mechanic",1,["Battery","General","Tyres"],0.8,15,4.6,512,true,false,0,24,249],
+ ["Bandra Battery Point","Bandra","Battery specialist",1,["Battery","EV / Electric"],1.1,25,4.7,298,false,true,8,22,199],
+ ["Carter Road Garage","Bandra","Garage",2,["Engine","Brakes","AC"],2.3,40,4.8,356,false,false,9,21,349],
+ ["Powai Puncture Pros","Powai","Tyre shop",0,["Tyres"],0.6,18,4.4,264,false,false,8,23,99],
+ ["EVolt Mumbai","Powai","Garage",2,["EV / Electric","Battery"],2.9,45,4.7,187,false,true,9,21,299],
+ ["Thane Truck & Car Care","Thane","Garage",0,["Engine","Towing","General"],2.5,40,4.2,473,false,false,8,20,149],
+ ["Ghodbunder Rescue","Thane","Mobile mechanic",1,["Towing","General"],1.4,20,4.6,339,true,false,0,24,249]
+],
+"Delhi":[
+ ["Karol Bagh Auto House","Karol Bagh","Garage",0,["Engine","General","Brakes"],1.3,30,4.4,689,false,false,9,20,149],
+ ["Capital Battery Co","Karol Bagh","Battery specialist",1,["Battery"],0.9,22,4.5,377,false,false,8,22,149],
+ ["South Delhi EV Hub","Lajpat Nagar","Garage",2,["EV / Electric","Battery","AC"],2.0,35,4.8,226,false,true,9,21,299],
+ ["Lajpat Tyre World","Lajpat Nagar","Tyre shop",1,["Tyres","Brakes"],1.5,28,4.5,301,false,false,9,22,149],
+ ["Rohini Roadside Rescue","Rohini","Mobile mechanic",1,["General","Battery","Tyres"],1.0,17,4.7,544,true,false,0,24,199],
+ ["NorthStar Motors","Rohini","Garage",1,["Engine","General"],2.4,40,4.5,358,false,false,9,21,199],
+ ["Dwarka Drive Care","Dwarka","Garage",1,["Engine","AC","General"],1.9,35,4.6,294,false,false,9,21,199],
+ ["Metro Mobile Mech","Dwarka","Mobile mechanic",2,["General","EV / Electric"],1.2,15,4.8,465,true,true,0,24,299]
+],
+"Pune":[
+ ["KP Auto Studio","Koregaon Park","Garage",2,["Engine","AC","Brakes"],1.6,30,4.8,312,false,false,9,21,299],
+ ["Baner Battery Point","Koregaon Park","Battery specialist",1,["Battery","EV / Electric"],2.2,35,4.6,203,false,true,8,22,199],
+ ["Hinjewadi HelpDesk Mech","Hinjewadi","Mobile mechanic",1,["General","Tyres","Battery"],0.9,16,4.6,487,true,false,0,24,249],
+ ["Phase2 Auto Works","Hinjewadi","Garage",1,["Engine","General"],2.7,45,4.5,341,false,false,9,21,199],
+ ["Kothrud Klassic Garage","Kothrud","Garage",0,["Engine","General","Brakes"],1.4,30,4.4,402,false,false,9,20,149],
+ ["Deccan Tyre House","Kothrud","Tyre shop",0,["Tyres"],0.7,20,4.3,258,false,false,8,22,99],
+ ["Wakad Wheels & EV","Wakad","Garage",1,["EV / Electric","Tyres","General"],1.8,35,4.7,219,false,true,9,21,199],
+ ["Wakad Rapid Rescue","Wakad","Mobile mechanic",1,["Towing","General"],1.1,18,4.6,376,true,false,0,24,249]
+],
+"Chennai":[
+ ["Anna Nagar Auto Care","Anna Nagar","Garage",1,["Engine","AC","General"],1.5,30,4.6,365,false,false,9,21,199],
+ ["VoltVan EV Service","Anna Nagar","Mobile mechanic",2,["EV / Electric","Battery"],1.2,16,4.8,294,true,true,0,24,299],
+ ["Velachery Vehicle Clinic","Velachery","Garage",1,["Engine","Brakes","General"],2.1,38,4.5,327,false,false,9,21,199],
+ ["OMR Battery Point","Velachery","Battery specialist",1,["Battery"],1.0,24,4.6,281,false,false,8,22,149],
+ ["T Nagar Tyre Centre","T Nagar","Tyre shop",1,["Tyres","General"],0.8,20,4.5,343,false,false,9,22,149],
+ ["Central Chennai Motors","T Nagar","Garage",0,["Engine","General"],2.3,40,4.3,419,false,false,9,20,149],
+ ["Porur Roadside Pros","Porur","Mobile mechanic",1,["General","Battery","Towing"],1.3,19,4.7,458,true,false,0,24,199],
+ ["Porur EV & Auto","Porur","Garage",1,["EV / Electric","Engine"],2.6,42,4.6,176,false,true,9,21,199]
+]
+};
+var REVIEW_POOL=[
+ ["Ramesh K.","Puncture fixed in about 25 minutes. Charged exactly what the app showed — no drama.",5],
+ ["Priya S.","My electric scooter wouldn't start; they found the controller fault on the spot and explained everything.",5],
+ ["Arun V.","Honest billing. Showed me the worn part before replacing it and returned the old one.",4],
+ ["Sneha R.","Reached faster than the ETA shown. Polite, quick, and the bike has run perfectly since.",5],
+ ["Mohd. F.","Battery replaced at a fair price, with a proper warranty card. Recommended.",4],
+ ["Kiran T.","Explained the overheating issue clearly instead of just topping up and leaving. Good people.",5]
+];
+var ABOUT_BY_KIND={
+ "Garage":"Full-service neighbourhood garage with trained technicians for engine, brakes, electricals and routine repairs. Known for honest billing and same-day delivery on most jobs.",
+ "Mobile mechanic":"Mobile mechanic who comes to your vehicle — home, office or roadside. Carries jump-start, puncture, battery and diagnostic kit for on-the-spot fixes.",
+ "Tyre shop":"Tyre specialist for punctures, tube and tubeless repair, wheel balancing and new tyres across bike and car sizes.",
+ "Battery specialist":"Battery specialist for testing, jump-starts and replacements with genuine warranty. Free battery health check with every visit."
+};
+var STATUS_STEPS=["Request sent","Mechanic confirmed","On the way","Arrived","Job done"];
+var STEP_MS=20000; /* demo speed: one status step about every 20 seconds */
+var LS_KEY="mechnow_v1", THEME_KEY="mechnow_theme";
+
+/* ================= state ================= */
+function seedMechanics(){
+  var out=[],n=0;
+  CITIES.forEach(function(city){ SEED[city].forEach(function(r){ n++;
+    out.push({id:"m"+n,name:r[0],city:city,area:r[1],kind:r[2],tier:r[3],tags:r[4],dist:r[5],eta:r[6],rating:r[7],reviews:r[8],mobile:r[9],ev:r[10],open:r[11],close:r[12],visit:r[13],partner:false});
+  });});
+  return out;
+}
+function loadState(){
+  var s=null;
+  try{ s=JSON.parse(localStorage.getItem(LS_KEY)||"null"); }catch(e){ s=null; }
+  if(!s||!Array.isArray(s.custom)||!Array.isArray(s.bookings)) s={custom:[],bookings:[]};
+  return s;
+}
+var state=loadState();
+function save(){ try{ localStorage.setItem(LS_KEY,JSON.stringify(state)); }catch(e){} }
+function allMechanics(){ return seedMechanics().concat(state.custom); }
+var filters={problem:"wont-start",vehicle:"Bike",city:"Hyderabad",area:"All areas",openNow:false,mobile:false,ev:false,top:false};
+
+/* ================= pure logic (also exercised by the smoke test) ================= */
+function isOpen(m,now){
+  now=now||new Date(); var h=now.getHours()+now.getMinutes()/60;
+  if(m.close>=24) return true;
+  return h>=m.open && h<m.close;
+}
+function fmtHour(h){
+  if(h>=24) return "12 AM"; var hh=h%12; if(hh===0) hh=12;
+  return hh+(h<12||h===24?" AM":" PM");
+}
+function openLabel(m,now){
+  if(m.close>=24) return "Open 24×7";
+  return isOpen(m,now)?("Open now · till "+fmtHour(m.close)):("Closed · opens "+fmtHour(m.open));
+}
+function priceFor(m,problemId){ var t=PRICES[problemId]||PRICES.general; return t[m.tier]||t[1]; }
+function inr(n){ return "₹"+Number(n).toLocaleString("en-IN"); }
+function getResults(){
+  var list=allMechanics().filter(function(m){
+    if(m.city!==filters.city) return false;
+    if(filters.area!=="All areas" && m.area!==filters.area) return false;
+    if(filters.openNow && !isOpen(m)) return false;
+    if(filters.mobile && !m.mobile) return false;
+    if(filters.ev && !m.ev) return false;
+    if(filters.top && !(m.rating && m.rating>=4.6)) return false;
+    return true;
+  });
+  list.sort(function(a,b){ return a.dist-b.dist; });
+  return list;
+}
+function findMech(id){ var l=allMechanics(); for(var i=0;i<l.length;i++) if(l[i].id===id) return l[i]; return null; }
+function bookingStatus(b,nowMs){
+  if(b.cancelled) return -1;
+  var idx=Math.floor(((nowMs||Date.now())-b.createdAt)/STEP_MS);
+  return Math.min(idx,STATUS_STEPS.length-1);
+}
+function buildBooking(mechId,details){
+  var m=findMech(mechId); if(!m) return null;
+  var b={id:"b"+Date.now().toString(36),mechId:m.id,mechName:m.name,problem:details.problem,problemLabel:PROBLEM_LABEL[details.problem]||details.problem,vehicle:details.vehicle,city:details.city,area:details.area,price:priceFor(m,details.problem),name:details.name||"",phone:details.phone||"",note:details.note||"",createdAt:Date.now(),cancelled:false};
+  state.bookings.unshift(b); save(); return b;
+}
+function cancelBooking(id){
+  for(var i=0;i<state.bookings.length;i++) if(state.bookings[i].id===id){ state.bookings[i].cancelled=true; save(); return true; }
+  return false;
+}
+function addMechanic(data){
+  var m={id:"u"+Date.now().toString(36),name:data.name,city:data.city,area:data.area,kind:data.kind,tier:1,tags:data.tags&&data.tags.length?data.tags:["General"],dist:1.2,eta:25,rating:null,reviews:0,mobile:!!data.mobile,ev:!!data.ev,open:9,close:21,visit:199,partner:true};
+  state.custom.unshift(m); save(); return m;
+}
+function reviewsFor(m){
+  var n=parseInt(String(m.id).replace(/\D/g,"")||"1",10), out=[];
+  for(var i=0;i<3;i++) out.push(REVIEW_POOL[(n+i)%REVIEW_POOL.length]);
+  return out;
+}
+</script>
+<script>
+"use strict";
+/* ================= MechNow — UI layer ================= */
+function $(s,r){ return (r||document).querySelector(s); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+var VBADGE='<svg class="vbadge" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-label="Verified"><path d="M12 1.8 14.5 4l3.3-.3 1 3.2 3 1.4-1.2 3.1 1.2 3.1-3 1.4-1 3.2-3.3-.3L12 22.2 9.5 20l-3.3.3-1-3.2-3-1.4L3.4 12 2.2 8.9l3-1.4 1-3.2 3.3.3L12 1.8Z"/><path d="m9 12.2 2.1 2.1 4-4.3" stroke="#0c0a09" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var AVATAR='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.2 4.2 0 0 1 5.6-4L17.5 5l1.5 1.5 3.3-2.8a4.2 4.2 0 0 1-5.4 5.6L8 18.2A2.1 2.1 0 0 1 5 15.2l8.9-8.9Z" transform="scale(.94)"/></svg>';
+function stars(r){ var f=Math.round(r); var s=""; for(var i=0;i<5;i++) s+=(i<f?"★":"☆"); return s; }
+var toastTimer=null;
+function toast(msg){
+  var t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ t.classList.remove("show"); },3400);
+}
+
+/* ---------- theme ---------- */
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme",t);
+  $("#themeIconSun").style.display=(t==="dark")?"block":"none";
+  $("#themeIconMoon").style.display=(t==="dark")?"none":"block";
+}
+function initTheme(){
+  var t="dark";
+  try{ t=localStorage.getItem(THEME_KEY)||"dark"; }catch(e){}
+  applyTheme(t);
+  $("#themeToggle").addEventListener("click",function(){
+    var next=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";
+    applyTheme(next);
+    try{ localStorage.setItem(THEME_KEY,next); }catch(e){}
+  });
+}
+
+/* ---------- finder controls ---------- */
+function buildChips(){
+  var box=$("#problemChips"); box.innerHTML="";
+  PROBLEMS.forEach(function(p){
+    var b=document.createElement("button");
+    b.type="button"; b.className="chip"+(filters.problem===p.id?" on":"");
+    b.textContent=p.label; b.setAttribute("role","radio"); b.setAttribute("aria-checked",filters.problem===p.id?"true":"false");
+    b.addEventListener("click",function(){ filters.problem=p.id; buildChips(); renderResults(); });
+    box.appendChild(b);
+  });
+}
+function fillAreas(sel,city,keepAll){
+  sel.innerHTML="";
+  if(keepAll){ var o=document.createElement("option"); o.textContent="All areas"; sel.appendChild(o); }
+  (AREAS[city]||[]).forEach(function(a){ var o=document.createElement("option"); o.textContent=a; sel.appendChild(o); });
+}
+function fillCities(sel){
+  sel.innerHTML="";
+  CITIES.forEach(function(c){ var o=document.createElement("option"); o.textContent=c; sel.appendChild(o); });
+}
+function initFinder(){
+  buildChips();
+  fillCities($("#citySel")); $("#citySel").value=filters.city;
+  fillAreas($("#areaSel"),filters.city,true); $("#areaSel").value=filters.area;
+  $("#citySel").addEventListener("change",function(){
+    filters.city=this.value; fillAreas($("#areaSel"),filters.city,true);
+    filters.area="All areas"; $("#areaSel").value="All areas"; renderResults();
+  });
+  $("#areaSel").addEventListener("change",function(){ filters.area=this.value; renderResults(); });
+  $("#vehBike").addEventListener("click",function(){ setVehicle("Bike"); });
+  $("#vehCar").addEventListener("click",function(){ setVehicle("Car"); });
+  [["#fOpen","openNow"],["#fMobile","mobile"],["#fEV","ev"],["#fTop","top"]].forEach(function(pair){
+    $(pair[0]).addEventListener("click",function(){
+      filters[pair[1]]=!filters[pair[1]];
+      this.classList.toggle("on",filters[pair[1]]); renderResults();
+    });
+  });
+  $("#findBtn").addEventListener("click",function(){
+    renderResults();
+    document.getElementById("results").scrollIntoView({behavior:"smooth"});
+    toast(getResults().length+" mechanics found near "+(filters.area==="All areas"?filters.city:filters.area));
+  });
+}
+function setVehicle(v){
+  filters.vehicle=v;
+  $("#vehBike").classList.toggle("on",v==="Bike");
+  $("#vehCar").classList.toggle("on",v==="Car");
+}
+
+/* ---------- results ---------- */
+function cardHTML(m){
+  var price=priceFor(m,filters.problem);
+  var open=isOpen(m);
+  var tags=m.tags.map(function(t){ return '<span class="tag'+(t.indexOf("EV")===0?" ev":"")+'">'+esc(t)+"</span>"; }).join("");
+  var rating=m.rating?('<span class="stars">'+stars(m.rating)+'</span> <b>'+m.rating.toFixed(1)+'</b> ('+m.reviews+' jobs)')
+                      :('<span class="pill newb">New partner</span>');
+  return '<article class="mcard'+(m._flash?" newflash":"")+'" data-id="'+m.id+'">'
+   +'<div class="mc-top"><div class="avatar">'+AVATAR+'</div><div>'
+   +'<div class="mc-name">'+esc(m.name)+' '+VBADGE+'</div>'
+   +'<div class="mc-kind">'+esc(m.kind)+' · '+esc(m.area)+', '+esc(m.city)+'</div></div></div>'
+   +'<div class="tags">'+tags+(m.mobile?'<span class="tag">Mobile — comes to you</span>':"")+'</div>'
+   +'<div class="stats"><span><b>'+m.dist.toFixed(1)+' km</b> away</span><span>ETA <b>'+m.eta+' min</b></span><span>'+rating+'</span></div>'
+   +'<div><span class="pill '+(open?"open":"closed")+'">'+esc(openLabel(m))+'</span></div>'
+   +'<div class="mc-foot"><div class="price">'+inr(price)+'<small>Fixed charge · '+esc(PROBLEM_LABEL[filters.problem])+'</small></div>'
+   +'<button class="btn" data-act="view" data-id="'+m.id+'">Details</button>'
+   +'<button class="btn primary" data-act="book" data-id="'+m.id+'">Book</button></div></article>';
+}
+function renderResults(){
+  var list=getResults(), grid=$("#resultsGrid");
+  grid.innerHTML=list.map(cardHTML).join("");
+  $("#resultsEmpty").style.display=list.length?"none":"block";
+  $("#resCount").textContent=list.length+(list.length===1?" mechanic":" mechanics");
+  $("#resCtx").textContent="for “"+PROBLEM_LABEL[filters.problem]+"” · "+filters.vehicle+" · "+(filters.area==="All areas"?filters.city:filters.area+", "+filters.city)+" · sorted by distance";
+  list.forEach(function(m){ delete m._flash; });
+}
+
+/* ---------- detail + booking modals ---------- */
+function openBack(id){ $("#"+id).classList.add("open"); document.body.style.overflow="hidden"; }
+function closeBack(id){ $("#"+id).classList.remove("open"); document.body.style.overflow=""; }
+function svcRows(m){
+  return PROBLEMS.map(function(p){
+    return '<div class="svc"><span>'+esc(p.label)+(p.id===filters.problem?' <span class="mono" style="color:var(--signal);font-size:10px">· SELECTED</span>':"")+'</span><b>'+inr(priceFor(m,p.id))+'</b></div>';
+  }).join("");
+}
+function openDetail(id){
+  var m=findMech(id); if(!m) return;
+  var revs=reviewsFor(m).map(function(r){
+    return '<div class="review"><span class="stars">'+stars(r[2])+'</span> “'+esc(r[1])+'”<div class="rn">— '+esc(r[0])+', completed job</div></div>';
+  }).join("");
+  $("#mechModalBody").innerHTML=
+    '<p class="kicker">'+esc(m.kind)+' · '+esc(m.area)+'</p>'
+   +'<h3>'+esc(m.name)+' '+VBADGE+'</h3>'
+   +'<div class="stats" style="margin:12px 0"><span><b>'+m.dist.toFixed(1)+' km</b> away</span><span>ETA <b>'+m.eta+' min</b></span>'
+   +(m.rating?'<span><span class="stars">'+stars(m.rating)+'</span> <b>'+m.rating.toFixed(1)+'</b> ('+m.reviews+' jobs)</span>':'<span class="pill newb">New partner</span>')
+   +'<span class="pill '+(isOpen(m)?"open":"closed")+'">'+esc(openLabel(m))+'</span></div>'
+   +'<p style="color:var(--muted);font-size:15px">'+esc(ABOUT_BY_KIND[m.kind]||ABOUT_BY_KIND["Garage"])+'</p>'
+   +'<h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:22px 0 4px">Services &amp; fixed charges</h4>'
+   +'<div class="svc"><span>Visit / inspection charge</span><b>'+inr(m.visit)+'</b></div>'
+   + svcRows(m)
+   +'<p class="demo-note" style="margin-top:10px">PARTS, IF NEEDED, ARE EXTRA AT MARKET RATE — QUOTED AND APPROVED BY YOU BEFORE FITTING.</p>'
+   +'<h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:22px 0 2px">Recent reviews</h4>'
+   + revs
+   +'<button class="btn primary" style="width:100%;margin:24px 0 4px;padding:16px;font-size:16px" data-act="book" data-id="'+m.id+'">Book this mechanic</button>';
+  openBack("mechBack");
+}
+function openBooking(id){
+  var m=findMech(id); if(!m) return;
+  var price=priceFor(m,filters.problem);
+  $("#bookModalBody").innerHTML=
+    '<p class="kicker">Confirm booking</p>'
+   +'<h3>'+esc(m.name)+'</h3>'
+   +'<div style="margin:16px 0">'
+   +'<div class="svc"><span>Problem</span><b>'+esc(PROBLEM_LABEL[filters.problem])+'</b></div>'
+   +'<div class="svc"><span>Vehicle</span><b>'+esc(filters.vehicle)+'</b></div>'
+   +'<div class="svc"><span>Location</span><b>'+esc(filters.area==="All areas"?m.area:filters.area)+', '+esc(filters.city)+'</b></div>'
+   +'<div class="svc"><span>Mechanic ETA</span><b>~'+m.eta+' min</b></div>'
+   +'<div class="svc"><span>Fixed service charge (pay after job)</span><b>'+inr(price)+'</b></div></div>'
+   +'<div style="display:grid;gap:12px">'
+   +'<div><label class="fl" for="bkName">Your name</label><input class="inp" id="bkName" type="text" placeholder="e.g. Vikranth" autocomplete="name"></div>'
+   +'<div><label class="fl" for="bkPhone">Phone (optional)</label><input class="inp" id="bkPhone" type="tel" placeholder="So the mechanic can reach you" autocomplete="tel"></div>'
+   +'<div><label class="fl" for="bkNote">Note for the mechanic (optional)</label><textarea class="inp" id="bkNote" rows="2" placeholder="Vehicle model, exact spot, anything that helps"></textarea></div></div>'
+   +'<button class="btn primary" id="bkConfirm" style="width:100%;margin:22px 0 4px;padding:16px;font-size:16px">Confirm booking · '+inr(price)+'</button>'
+   +'<p class="demo-note" style="text-align:center;margin-top:8px">NO ADVANCE PAYMENT. PAY THE MECHANIC AFTER THE JOB.</p>';
+  openBack("bookBack");
+  $("#bkConfirm").addEventListener("click",function(){
+    var b=buildBooking(m.id,{problem:filters.problem,vehicle:filters.vehicle,city:filters.city,area:(filters.area==="All areas"?m.area:filters.area),name:$("#bkName").value.trim(),phone:$("#bkPhone").value.trim(),note:$("#bkNote").value.trim()});
+    if(!b){ toast("Something went wrong — please try again."); return; }
+    var btn=this; btn.textContent="✓ Booked"; btn.style.background="#4ade80";
+    setTimeout(function(){
+      closeBack("bookBack"); closeBack("mechBack"); renderBookings();
+      document.getElementById("bookings").scrollIntoView({behavior:"smooth"});
+      toast("Booked — "+m.name+" has your request. Track it below.");
+    },650);
+  });
+}
+
+/* ---------- bookings ---------- */
+var lastBookingKey="";
+function renderBookings(){
+  var list=state.bookings, box=$("#bookingsList");
+  $("#bookingsEmpty").style.display=list.length?"none":"block";
+  var key=list.map(function(b){ return b.id+":"+(b.cancelled?"x":bookingStatus(b)); }).join("|");
+  if(key===lastBookingKey && box.innerHTML) return;
+  lastBookingKey=key;
+  box.innerHTML=list.map(function(b){
+    var st=bookingStatus(b);
+    var steps=STATUS_STEPS.map(function(label,i){
+      var cls=b.cancelled?"":(i<st?"done":(i===st?(st===STATUS_STEPS.length-1?"done":"done now"):""));
+      return '<div class="tstep '+cls+'">'+label+'</div>';
+    }).join("");
+    return '<div class="bcard"><div class="bcard-top"><span class="bn">'+esc(b.mechName)+'</span>'
+     +'<span class="bm">'+esc(b.problemLabel)+' · '+esc(b.vehicle)+' · '+esc(b.area)+', '+esc(b.city)+'</span>'
+     +'<span class="bp">'+inr(b.price)+'</span></div>'
+     +(b.cancelled
+        ? '<p style="margin-top:14px;color:var(--danger);font-weight:700">Booking cancelled</p>'
+        : '<div class="timeline">'+steps+'</div>'
+          +'<p class="demo-note" style="margin-top:8px">'+(st>=STATUS_STEPS.length-1?"JOB COMPLETED — PAY THE MECHANIC "+inr(b.price)+" IF YOU HAVEN'T ALREADY.":"DEMO MODE — STATUS ADVANCES ABOUT EVERY 20 SECONDS. CURRENT: "+STATUS_STEPS[st].toUpperCase())+'</p>'
+          +(st<STATUS_STEPS.length-1?'<button class="btn danger" data-act="cancel" data-id="'+b.id+'" style="margin-top:12px">Cancel booking</button>':""))
+     +'</div>';
+  }).join("");
+}
+
+/* ---------- join form ---------- */
+function initJoin(){
+  fillCities($("#jCity")); $("#jCity").value="Hyderabad";
+  fillAreas($("#jArea"),"Hyderabad",false);
+  $("#jCity").addEventListener("change",function(){ fillAreas($("#jArea"),this.value,false); });
+  var tg=$("#jTags");
+  tg.innerHTML=ALL_TAGS.map(function(t){
+    return '<label><input type="checkbox" value="'+esc(t)+'">'+esc(t)+'</label>';
+  }).join("");
+  $("#joinForm").addEventListener("submit",function(ev){
+    ev.preventDefault();
+    var name=$("#jName");
+    if(!name.value.trim()){
+      name.classList.add("err"); name.focus();
+      toast("Add your garage or mechanic name to list.");
+      return;
+    }
+    name.classList.remove("err");
+    var tags=[]; tg.querySelectorAll("input:checked").forEach(function(c){ tags.push(c.value); });
+    var kind=$("#jKind").value;
+    var m=addMechanic({name:name.value.trim(),kind:kind,city:$("#jCity").value,area:$("#jArea").value,tags:tags,mobile:$("#jMobile").checked||kind==="Mobile mechanic",ev:$("#jEV").checked});
+    m._flash=true;
+    filters.city=m.city; filters.area=m.area;
+    $("#citySel").value=m.city; fillAreas($("#areaSel"),m.city,true); $("#areaSel").value=m.area;
+    renderResults();
+    var btn=$("#jSubmit"), old=btn.textContent;
+    btn.textContent="✓ You're listed"; btn.style.background="#4ade80";
+    setTimeout(function(){ btn.textContent=old; btn.style.background=""; },1600);
+    this.reset(); fillCities($("#jCity")); $("#jCity").value=m.city; fillAreas($("#jArea"),m.city,false);
+    document.getElementById("results").scrollIntoView({behavior:"smooth"});
+    toast("Welcome aboard — "+m.name+" is live in "+m.area+".");
+  });
+  $("#jName").addEventListener("input",function(){ this.classList.remove("err"); });
+}
+
+/* ---------- chrome: marquee, reveal, progress, back-to-top ---------- */
+function initChrome(){
+  var items=["Won't start","Flat tyre","Battery dead","Engine trouble","Overheating","Accident help","EV specialists","Verified ID-checked","Upfront fixed prices","Pay after the job"];
+  var half=items.map(function(t){ return "<span>"+esc(t)+" ✦</span>"; }).join("");
+  $("#marqueeTrack").innerHTML=half+half;
+  var io=null;
+  if("IntersectionObserver" in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("visible"); io.unobserve(e.target); } });
+    },{threshold:.12});
+    document.querySelectorAll(".rv").forEach(function(elm){ io.observe(elm); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(elm){ elm.classList.add("visible"); });
+  }
+  var bar=$("#progressBar"), top=$("#backTop");
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.transform="scaleX("+(max>0?(h.scrollTop/max):0)+")";
+    top.classList.toggle("show",h.scrollTop>600);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
+  top.addEventListener("click",function(){ window.scrollTo({top:0,behavior:"smooth"}); });
+  document.querySelectorAll("[data-close]").forEach(function(b){
+    b.addEventListener("click",function(){ closeBack(b.getAttribute("data-close")); });
+  });
+  document.querySelectorAll(".mback").forEach(function(mb){
+    mb.addEventListener("click",function(e){ if(e.target===mb) closeBack(mb.id); });
+  });
+  document.addEventListener("click",function(e){
+    var btn=e.target.closest("[data-act]"); if(!btn) return;
+    var act=btn.getAttribute("data-act"), id=btn.getAttribute("data-id");
+    if(act==="view") openDetail(id);
+    else if(act==="book"){ closeBack("mechBack"); openBooking(id); }
+    else if(act==="cancel"){ if(cancelBooking(id)){ lastBookingKey=""; renderBookings(); toast("Booking cancelled."); } }
+  });
+  setInterval(renderBookings,4000);
+}
+
+/* ---------- init (browser only) ---------- */
+if(typeof document!=="undefined" && document.getElementById && document.getElementById("resultsGrid")){
+  initTheme(); initFinder(); renderResults(); renderBookings(); initJoin(); initChrome();
+}
+</script>
+</body>
+</html>
